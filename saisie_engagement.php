@@ -35,6 +35,7 @@ if ($submit) {
         die("Erreur lors de l'insertion des données dans la table 'engagement' :" . $ex -> getMessage());
     }
     header("Location: gestion_engagement.php");
+    exit;
 } else {
     $sql = "SELECT * FROM produit WHERE code_ax = :code_ax";
     $params = array(

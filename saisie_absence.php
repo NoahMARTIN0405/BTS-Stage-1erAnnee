@@ -7,10 +7,7 @@
 </head>
 <body>
     <form action="" method="post">
-        <select name="" id="">
-            <option value="AJ">Absence justifié</option>
-            <option value="AI">Absence injustifié</option>
-        </select>
+        
     </form>
 </body>
 </html>

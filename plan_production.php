@@ -58,35 +58,41 @@ foreach ($engagements as $eng) {
     <style>
         table {
             width: 100%;
-            border-collapse: collapse;
+            border: white;
         }
         th {
-            border: 1px solid #ddd;
             color: white;
             padding: 8px;
-            text-align: left;
+            text-align: center;
             background-color: #00ae4e;
         }
         tr:nth-child(even) {
-            background-color: #f2f2f2; /* Gris clair */
+            background-color: #f2f2f2;
         }
         tr:nth-child(odd) {
-            background-color: #ffffff; /* Blanc */
+            background-color: #ffffff;
         }
-        td {
-            border: 1px solid #ddd;
-            padding: 8px;
-            text-align: left;
+        th, td {
+            text-align: center;
+            width: 100px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
         }
+
     </style>
 </head>
 <body>
-    <!--Permet d'afficher la tête de page sur toutes les pages -->
-    <?php include "tete_page.php"; ?>
-    <h1>Plan de production : </h1>
-<div style="margin: 20px 0;">
+<?php include "tete_page.php"; ?>
+
+<h1 style = "text-align: center; margin-top: 20px;">Plan de production </h1>
+
+<hr style="text-align: center;border: 1px solid black; width: 100%;">
+
+<div style="text-align: center; margin: 20px 0;">
     <button onclick="changerSemaine(-1)">⬅️ Semaine précédente</button>
     <button onclick="changerSemaine(1)">Semaine suivante ➡️</button>
+    <div id="semaine-label" style="margin: 10px 0; font-weight: bold;"></div>
 </div>
 
 <table id="planning">
@@ -99,20 +105,25 @@ foreach ($engagements as $eng) {
             <th>&nbsp</th>
             <?php
             $dates = [];
-            for ($i = 1; $i <= 365; $i++) {
-                $date = date("d/m/Y", strtotime("+$i days"));
-                $dates[] = $date;
-                echo "<th class='col-$i'>$date</th>";
+            $startDate = new DateTime();
+            if ($startDate->format('N') != 1) {
+                $startDate->modify('last monday');
+            }
+
+            for ($i = 0; $i < 365; $i++) {
+                $date = clone $startDate;
+                $date->modify("+$i days");
+                $formatted = $date->format("d/m/Y");
+                $dates[] = $formatted;
+                echo "<th class='col-" . ($i + 1) . "'>$formatted</th>";
             }
             ?>
-            <th>Temp de prod</th>
-                <th>Durée du cycle</th>
-                <th>Total semaine en cours</th>
-                <th>Réalisé</th>
-                <th>Reste à fabriquer</th>
-                <th>Stock secu 1</th>
-                <th>Stock secu 2</th>
-                <th>Commentaires</th>
+            <th>Tps prod</th>
+            <th>Durée cycle</th>
+            <th>Total semaine</th>
+            <th>Réalisé</th>
+            <th>Reste à fabriquer</th>
+            <th>Commentaires</th>
         </tr>
     </thead>
     <tbody>
@@ -142,15 +153,21 @@ foreach ($engagements as $eng) {
                     $class = $qte !== '' ? 'has-engagement' : '';
                     echo "<td class='col-" . ($i + 1) . " $class'>" . ($qte !== '' ? $qte : '') . "</td>";
                 endforeach; ?>
+                <td>&nbsp</td>
+                <td>&nbsp</td>
+                <td>&nbsp</td>
+                <td>&nbsp</td>
+                <td>&nbsp</td>
+                <td>&nbsp</td>
+
             </tr>
         <?php endforeach; ?>
     </tbody>
 </table>
 
-
 </body>
 <script>
-    const joursParSemaine = 6;
+    const joursParSemaine = 7;
     const totalJours = 365;
     let semaineCourante = 0;
 
@@ -164,7 +181,9 @@ foreach ($engagements as $eng) {
 
     function afficherSemaine(semaine) {
         for (let i = 1; i <= totalJours; i++) {
-            const visible = (i >= semaine * joursParSemaine + 1) && (i <= (semaine + 1) * joursParSemaine);
+            const debut = semaine * joursParSemaine + 1;
+            const fin = debut + joursParSemaine - 1;
+            const visible = (i >= debut && i <= fin);
             const cellules = document.querySelectorAll('.col-' + i);
             cellules.forEach(cell => {
                 cell.style.display = visible ? '' : 'none';
