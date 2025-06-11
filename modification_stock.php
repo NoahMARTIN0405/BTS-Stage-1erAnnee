@@ -1,20 +1,24 @@
 <?php
 
+//Récupération de ma fonction de connexion à ma BDD
 include "functions/db_functions.php";
 
 $dbh = db_connect();
 
+//Récupération du code AX dans l'URL
 $code_ax = isset($_GET["code_ax"]) ? $_GET["code_ax"]:null;
 if ($code_ax == null) {
     die ("Erreur lors de la récupération de l'id dans l'url");
 }
 
+// Récupération des inputs de mon formulaire
 $stock_secu_attendu = isset($_POST["stock_secu_attendu"]) ? $_POST["stock_secu_attendu"]:null;
 $stock_secu_reel = isset($_POST["stock_secu_reel"]) ? $_POST["stock_secu_reel"]:null;
 $commentaire_stock = isset($_POST["commentaire_stock"]) ? $_POST["commentaire_stock"]:null;
 $submit = isset($_POST["submit"]);
 $annuler = isset($_POST["annuler"]);
 
+//Si mon formulaire est soumis alors on "UPDATE" les données déjà connu dans notre table "produit" par les données présentes dans nos inputs
 if ($submit) {
 
     $sql = "UPDATE produit SET stock_secu_attendu = :stock_secu_attendu, stock_secu_reel = :stock_secu_reel, commentaire_stock = :commentaire_stock WHERE code_ax =:code_ax";
@@ -33,6 +37,9 @@ if ($submit) {
         die("Erreur lors de la modification des données :". $ex -> getMessage());
     }
     header("Location: gestion_stock.php");
+    exit;
+
+    //Sinon affichage des données déjà connu dans les inputs
 } else {
     
     $sql = "SELECT * FROM produit WHERE code_ax = :code_ax";
@@ -59,6 +66,7 @@ if ($submit) {
         die("Erreur de la récupération des données :". $ex -> getMessage());
     }
 }
+//Si le formulaire n'est pas soumis alors on est redirigé vers la page "Gestions des stocks"
 if ($annuler) {
     header("Location: gestion_stock.php");
 }
@@ -70,13 +78,18 @@ if ($annuler) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="css/style.css">
     <title>Modification d'un produit</title>
+    <link rel="stylesheet" href="css/main.css">
 </head>
 <body>
-    <h1>Modification d'un produit :</h1>
 
-    <form action="" method = "POST">
+    <?php include "tete_page.php";?>
+    
+    <h1 style = "text-align: center; margin-top: 20px;">Modification d'un stock</h1>
+
+    <hr style="border: 1px solid black; width: 100%;">
+
+    <form action="" method = "POST" style = "margin-left: 20px;">
 
         <p>Code AX : <br><input type = "text" name = "code_ax" value ="<?php echo htmlspecialchars($code_ax) ?>" disabled></p>
 

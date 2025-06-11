@@ -1,14 +1,17 @@
 <?php
 
+//Récupération de ma fonction de connexion à ma BDD
 include "functions/db_functions.php";
 
 $dbh = db_connect();
 
+//Récupération de l'id utilisateur dans l'URL 
 $id_utilisateur= isset($_GET["id_utilisateur"]) ? $_GET["id_utilisateur"]: null;
 if ($id_utilisateur == null ){
     die ("Erreur le paramètre n'est pas passé dans l'url");
 }
 
+//Récupération des "input" de mon formulaire
 $unite_production = isset($_POST["unite_production"]) ? $_POST["unite_production"]: null;
 $secteur = isset($_POST["secteur"]) ? $_POST["secteur"]: null;
 $nom_prenom_manager = isset($_POST["nom_prenom_manager"]) ? $_POST["nom_prenom_manager"] : null;
@@ -20,6 +23,7 @@ $type_equipe = isset($_POST["type_equipe"]) ? $_POST["type_equipe"]: null;
 $statut = isset($_POST["statut"]) ? $_POST["statut"]: null;
 $submit = isset($_POST["submit"]);
 
+//Si mon formulaire est soumis alors on "UPDATE" les données de notre table "utilisateur" par les données de nos input
 if ($submit) {
     $sql = "UPDATE utilisateur SET nom =:nom, prenom =:prenom, unite_production =:unite_production, secteur =:secteur, nom_prenom_manager =:nom_prenom_manager, type_emploi =:type_emploi, type_contrat =:type_contrat, type_equipe =:type_equipe, statut =:statut";
     $params = array(
@@ -40,7 +44,10 @@ if ($submit) {
     } catch (PDOException $ex) {
         die ("Erreur lors de la modification des données utilisateur : ". $ex -> getMessage());
     }
-    header("Location: gestion_effectif.php");
+    header("Location: tableau_effectif.php");
+    exit;
+
+    //Sinon on sélectionne les données "utilisateur" déjà connu et on les affiche dans nos input
 } else {
     $sql = "SELECT * FROM utilisateur";
     try {
@@ -68,11 +75,16 @@ if ($submit) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Modification effectif </title>
+    <link rel="stylesheet" href="css/main.css">
 </head>
 <body>
-    <h1>Modification des effectifs :</h1>
+    <?php include "tete_page.php"?>
+    
+    <h1 style = "text-align: center; margin-top: 20px;">Modification des effectifs</h1>
 
-    <form action="" method = "post">
+    <hr style="border: 1px solid black; width: 100%;">
+
+    <form action="" method = "post" style = "margin-left: 20px;">
         <p>Unité Production : <br><input type="text" name = "unite_production" value = "<?php echo $unite_production ?>"></p>
         <p>Secteur : <br><input type="text" name = "secteur" value = "<?php echo $secteur ?>"></p>
         <p>Nom-Prénom Manager : <br><input type="text" name = "nom_prenom_manager" value = "<?php echo $nom_prenom_manager ?>"></p>

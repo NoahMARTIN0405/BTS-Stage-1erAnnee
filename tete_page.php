@@ -4,6 +4,7 @@ session_start();
 
 $deconnexion = isset($_POST["submit"]);
 
+//Si le bouton de deconnexion est cliqué alors on "détruit" proprement la session
 if ($deconnexion) {
     if (isset($_SESSION["username"])) {
         $username = $_SESSION["username"];
@@ -21,35 +22,45 @@ if ($deconnexion) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/main.css">
 </head>
 <body>
-    <div class = "tetePage">
-        <div class = "logo">    
-            <img src="" alt="logo.png">
-        </div>
-        <div class = "titre">
-            <h1>ACTIA Aerospace</h1>
-        </div>
-        <div class="deconnexion">
-            <p>Connecté en tant que : <?php echo $_SESSION["username"] ?></p>
-
-            <form action="" method = "POST">
-        
-                <input type = "submit" name = "submit" value = "Se déconnecter" >
-    
+    <nav class="navbar navbar-expand-lg bg-dark" data-bs-theme="dark">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="dashboard.php"><img src="img/logo/ACTIA_QUADRI_RVB.png" width = 200px  alt=""></a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarColor02" aria-controls="navbarColor02" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarColor02">
+      <ul class="navbar-nav me-auto">
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="gestion_produit.php">Gestion des produits</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="gestion_stock.php">Gestion des stocks</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="gestion_effectif.php">Gestion des effectifs</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="gestion_engagement.php">Gestion des engagements</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="saisie_production.php">Saisie production</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="plan_production.php">Plan de production</a>
+        </li>
+      </ul>
+        <div style="display: grid; place-items: center">
+            <p>Connecté en tant que : <span style ="color: #00ae4e; font-weight: bold;" ><?php echo $_SESSION["username"] ?></span></p>
+            <form class="d-flex" method = "POST">
+                <input type = "submit" name = "submit" class = "btn btn-success" value = "Se déconnecter" >
             </form>
         </div>
     </div>
-    <nav>
-        <ul>
-            <li><a href="gestion_produit.php">Gestion des produits</a></li>
-            <li><a href="gestion_stock.php">Gestion des stocks</a></li>
-            <li><a href="gestion_effectif.php">Gestion des effectifs</a></li>
-            <li><a href="saisie_engagement.php">Saisie engagement</a></li>
-            <li><a href="saisie_production.php">Saisie production</a></li>
-            <li><a href="plan_production.php">Plan de production</a></li>
-        </ul>
-    </nav>
+  </div>
+</nav>
 </body>
 </html>

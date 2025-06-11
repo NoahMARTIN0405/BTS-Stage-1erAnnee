@@ -1,9 +1,11 @@
 <?php
 
+//Récupération de ma fonction de connexion à ma BDD
 include "functions/db_functions.php";
 
 $dbh = db_connect();
 
+//Récupération des input du formulaire
 $code_ax = isset($_POST["code_ax"]) ? $_POST["code_ax"]:null;
 $code_movex = isset($_POST["code_movex"]) ? $_POST["code_movex"]:null;
 $designation_produit = isset($_POST["designation_produit"]) ? $_POST["designation_produit"]:null;
@@ -11,6 +13,7 @@ $reference_commerciale = isset($_POST["reference_commerciale"]) ? $_POST["refere
 $submit = isset($_POST["submit"]);
 $annuler = isset($_POST["annuler"]);
 
+//Si le formulaire est soumis alors on "INSERT" les input dans la table "produit"
 if ($submit) {
     $sql = "INSERT INTO produit (code_ax, code_movex, designation_produit, reference_commerciale) VALUES (:code_ax, :code_movex, :designation_produit, :reference_commerciale)";
     $params = array(
@@ -28,8 +31,9 @@ if ($submit) {
         die("Erreur lors de l'insertion des données dans la table 'produit' : " . $ex -> getMessage());
     }
     header("Location: gestion_produit.php");
+    exit;
 }
-
+//Si on annule la saisie, on est redirigé vers la page "Gestion des produits"
 if ($annuler) {
     header("Location: gestion_produit.php");
 }
@@ -39,13 +43,17 @@ if ($annuler) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="css/style.css">
     <title>Ajout d'un produit</title>
+    <link rel="stylesheet" href="css/main.css">
 </head>
 <body>
+    <?php include "tete_page.php";?>
 
-    <h1> Ajouter un produit :</h1>
-    <form action = "" method = "POST">
+    <h1 style = "text-align: center; margin-top: 20px;"> Ajout d'un produit</h1>
+
+    <hr style="border: 1px solid black; width: 100%;">
+    
+    <form action = "" method = "POST" style = "margin-left: 20px;">
 
         <p>Code AX : <br><input type = "text" name = "code_ax"></p>
 

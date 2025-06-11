@@ -1,32 +1,15 @@
 <?php
 
-
+//Récupération de ma fonction de connexion à ma BDD
 include "functions/db_functions.php";
 
 $dbh = db_connect();
 
-
-
+//Récupération des inputs du formulaire de recherche 
 $search_code_ax = isset($_POST["search_code_ax"]) ? $_POST["search_code_ax"]:null;
 $search = isset($_POST["search"]);
 
-
-if ($search) {
-    $sql = "SELECT * FROM produit WHERE code_ax = :code_ax";
-    $params = array(
-        ":code_ax" => $search_code_ax,
-    );
-    try {
-
-        $sth = $dbh -> prepare($sql);
-        $sth -> execute($params);
-        $produits = $sth -> fetch(PDO::FETCH_ASSOC);
-
-    } catch (PDOException $ex) {
-        die("Erreur de la récupération des données :". $ex -> getMessage());
-    }
-}
-
+//Récupération des inputs du formualire d'insertion 
 $code_ax = isset($_POST["code_ax"]) ? $_POST["code_ax"]:null;
 $code_movex = isset($_POST["code_movex"]) ? $_POST["code_movex"]:null;
 $designation_produit = isset($_POST["designation_produit"]) ? $_POST["designation_produit"]:null;
@@ -36,6 +19,15 @@ $qte_production = isset($_POST["qte_production"]) ? $_POST["qte_production"]:nul
 $submit = isset($_POST["submit"]);
 $annuler = isset($_POST["annuler"]);
 
+$sql = "SELECT * FROM produit";
+try { 
+    $sth = $dbh -> prepare($sql);
+    $sth -> execute();
+    $rows = $sth -> fetchAll(PDO::FETCH_ASSOC);
+} catch (PDOException $ex){
+    die (" Erreur lors de la récupération de la liste". $ex -> getMessage());
+}
+//Si le formulaire est soumis alors on "INSERT" les données présentes dans les inputs dans notre table "production" 
 if ($submit) {
     $sql = "INSERT INTO production (date_production, qte_production, code_ax) VALUES (:date_production, :qte_production, :code_ax)";
     $params = array(
@@ -65,16 +57,50 @@ if ($annuler) {
     <title>Saisie production :</title>
 </head>
 <body>
-
+    <!--Permet d'afficher la tête de page sur toutes les pages -->
     <?php include "tete_page.php"?>
 
-    <h1>Saisie production :</h1>
+    <h1 style = "text-align: center; margin-top: 20px;">Saisie production</h1>
+
+    <hr style="border: 1px solid black; width: 100%;">
+
+    <h2 style = "margin-left: 20px">Entrez votre code AX :</h2>
 
     <form action="" method = "POST">
         
-        <p><input type = "text" name = "search_code_ax" placeholder = "Rechercher votre code AX">
+        <select name="search_code_ax" id = "search_code_ax" style = "width: 200px; margin-left: 20px;">
+            <option value=""></option>
+                <?php
+                    foreach ($rows as $row) {
+                        echo "<option value='".$row["code_ax"]."'>";
+                        echo $row["code_ax"];
+                        echo "</option>";
+                    }
+                ?>
+        </select>
 
         <input type ="submit" name = "search" value = "Rechercher"></p>
+    
+    </form> 
+
+<?php
+    //Si mon formulaire de recherche est soumis alors on récupère les infos du produit dont le code AX correspond au code AX tapé dans la barre de recherche
+    if ($search) {
+    $sql = "SELECT * FROM produit WHERE code_ax = :code_ax";
+    $params = array(
+        ":code_ax" => $search_code_ax,
+    );
+    try {
+
+        $sth = $dbh -> prepare($sql);
+        $sth -> execute($params);
+        $produits = $sth -> fetch(PDO::FETCH_ASSOC);
+
+    } catch (PDOException $ex) {
+        die("Erreur de la récupération des données :". $ex -> getMessage());
+    }
+?>
+    <form action="" method="post" style ="margin-left: 20px;">
 
         <p>Code AX : <br><input type = "text" name = "code_ax" value ="<?php echo $produits["code_ax"] ?? ''?>"></p>
 
@@ -91,8 +117,10 @@ if ($annuler) {
         <input type = "submit" name = "submit" value ='Enregistrer'>
 
         <input type="submit" name = annuler value = "annuler">
-
     
     </form>
+<?php
+}
+?>
 </body>
 </html>

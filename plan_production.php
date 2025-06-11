@@ -1,5 +1,6 @@
 <?php
 
+//Récupération de ma fonction de connexion à ma BDD
 include "functions/db_functions.php";
 $dbh = db_connect();
 
@@ -54,9 +55,33 @@ foreach ($engagements as $eng) {
 <head>
     <meta charset="UTF-8">
     <title>Planning Production & Engagement</title>
-    <link rel="stylesheet" href="css/style.css">
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th {
+            border: 1px solid #ddd;
+            color: white;
+            padding: 8px;
+            text-align: left;
+            background-color: #00ae4e;
+        }
+        tr:nth-child(even) {
+            background-color: #f2f2f2; /* Gris clair */
+        }
+        tr:nth-child(odd) {
+            background-color: #ffffff; /* Blanc */
+        }
+        td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+    </style>
 </head>
 <body>
+    <!--Permet d'afficher la tête de page sur toutes les pages -->
     <?php include "tete_page.php"; ?>
     <h1>Plan de production : </h1>
 <div style="margin: 20px 0;">

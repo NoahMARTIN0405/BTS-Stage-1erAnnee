@@ -7,6 +7,7 @@
     
 </head>
 <body>
+    <!--Permet d'afficher la tête de page sur toutes les pages -->
     <?php include "tete_page.php"?>
 </body>
 </html>
