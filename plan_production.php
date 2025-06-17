@@ -5,9 +5,8 @@ include "functions/db_functions.php";
 $dbh = db_connect();
 
 // Récupération des produits
-$sql_produit = "SELECT * FROM produit";
 try {
-    $sth = $dbh->prepare($sql_produit);
+    $sth = $dbh->prepare("CALL GetProduits()");
     $sth->execute();
     $produits = $sth->fetchAll(PDO::FETCH_ASSOC);
 } catch (PDOException $ex) {
@@ -15,9 +14,9 @@ try {
 }
 
 // Récupération des productions
-$sql = "SELECT * FROM production";
+
 try {
-    $sth = $dbh->prepare($sql);
+    $sth = $dbh->prepare("CALL GetProductions()");
     $sth->execute();
     $productions = $sth->fetchAll(PDO::FETCH_ASSOC);
 } catch (PDOException $ex) {
@@ -25,9 +24,8 @@ try {
 }
 
 // Récupération des engagements (livraisons prévues)
-$sql_engagement = "SELECT * FROM engagement";
 try {
-    $sth = $dbh->prepare($sql_engagement);
+    $sth = $dbh->prepare("CALL GetEngagements()");
     $sth->execute();
     $engagements = $sth->fetchAll(PDO::FETCH_ASSOC);
 } catch (PDOException $ex) {
@@ -55,34 +53,39 @@ foreach ($engagements as $eng) {
 <head>
     <meta charset="UTF-8">
     <title>Planning Production & Engagement</title>
-    <style>
-        table {
-            width: 100%;
-            border: white;
-        }
-        th {
-            color: white;
-            padding: 8px;
-            text-align: center;
-            background-color: #00ae4e;
-        }
-        tr:nth-child(even) {
-            background-color: #f2f2f2;
-        }
-        tr:nth-child(odd) {
-            background-color: #ffffff;
-        }
-        th, td {
-            text-align: center;
-            width: 100px;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: nowrap;
-        }
-
-    </style>
 </head>
 <body>
+<style>
+        table {
+        width: 80%;
+        margin: auto;
+        border-collapse: collapse;
+    }
+
+    th, td {
+        border: 1px solid black !important;
+        padding: 8px;
+        text-align: center;
+        width: 100px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    th {
+        color: white;
+        background-color: #00ae4e;
+    }
+
+    tr:nth-child(even) {
+        background-color: #f2f2f2;
+    }
+
+    tr:nth-child(odd) {
+        background-color: #ffffff;
+    }
+</style>
+
 <?php include "tete_page.php"; ?>
 
 <h1 style = "text-align: center; margin-top: 20px;">Plan de production </h1>
@@ -92,6 +95,12 @@ foreach ($engagements as $eng) {
 <div style="text-align: center; margin: 20px 0;">
     <button onclick="changerSemaine(-1)">⬅️ Semaine précédente</button>
     <button onclick="changerSemaine(1)">Semaine suivante ➡️</button>
+
+    <label for="select-semaine">Aller à la semaine :</label>
+    <select id="select-semaine" onchange="selectionnerSemaine(this.value)">
+        <!-- Options ajoutées dynamiquement -->
+    </select>
+
     <div id="semaine-label" style="margin: 10px 0; font-weight: bold;"></div>
 </div>
 
@@ -120,10 +129,8 @@ foreach ($engagements as $eng) {
             ?>
             <th>Tps prod</th>
             <th>Durée cycle</th>
-            <th>Total semaine</th>
             <th>Réalisé</th>
             <th>Reste à fabriquer</th>
-            <th>Commentaires</th>
         </tr>
     </thead>
     <tbody>
@@ -157,8 +164,6 @@ foreach ($engagements as $eng) {
                 <td>&nbsp</td>
                 <td>&nbsp</td>
                 <td>&nbsp</td>
-                <td>&nbsp</td>
-                <td>&nbsp</td>
 
             </tr>
         <?php endforeach; ?>
@@ -170,12 +175,25 @@ foreach ($engagements as $eng) {
     const joursParSemaine = 7;
     const totalJours = 365;
     let semaineCourante = 0;
+    const startDate = new Date(); // Date actuelle
+
+    // Corriger le startDate pour tomber sur le lundi de la semaine en cours
+    if (startDate.getDay() !== 1) {
+        const jour = startDate.getDay() === 0 ? 7 : startDate.getDay();
+        startDate.setDate(startDate.getDate() - (jour - 1));
+    }
 
     function changerSemaine(direction) {
         const maxSemaine = Math.floor((totalJours - 1) / joursParSemaine);
         semaineCourante += direction;
         if (semaineCourante < 0) semaineCourante = 0;
         if (semaineCourante > maxSemaine) semaineCourante = maxSemaine;
+        afficherSemaine(semaineCourante);
+        document.getElementById("select-semaine").value = semaineCourante;
+    }
+
+    function selectionnerSemaine(semaine) {
+        semaineCourante = parseInt(semaine);
         afficherSemaine(semaineCourante);
     }
 
@@ -189,10 +207,39 @@ foreach ($engagements as $eng) {
                 cell.style.display = visible ? '' : 'none';
             });
         }
-        document.getElementById("semaine-label").textContent = "Semaine " + (semaine + 1);
+
+        // Mise à jour du label
+        const dateDebut = new Date(startDate);
+        dateDebut.setDate(dateDebut.getDate() + semaine * joursParSemaine);
+        const dateFin = new Date(dateDebut);
+        dateFin.setDate(dateFin.getDate() + joursParSemaine - 1);
+        const formatDate = d => d.toLocaleDateString('fr-FR');
+        document.getElementById("semaine-label").textContent = 
+            "Semaine " + (semaine + 1) + " (" + formatDate(dateDebut) + " - " + formatDate(dateFin) + ")";
     }
 
-    // Afficher la première semaine
+    function remplirSelect() {
+        const select = document.getElementById('select-semaine');
+        const maxSemaine = Math.floor((totalJours - 1) / joursParSemaine);
+
+        for (let i = 0; i <= maxSemaine; i++) {
+            const dateDebut = new Date(startDate);
+            dateDebut.setDate(dateDebut.getDate() + i * joursParSemaine);
+            const dateFin = new Date(dateDebut);
+            dateFin.setDate(dateFin.getDate() + joursParSemaine - 1);
+
+            const option = document.createElement('option');
+            option.value = i;
+            option.textContent = `Semaine ${i + 1} (${dateDebut.toLocaleDateString('fr-FR')} - ${dateFin.toLocaleDateString('fr-FR')})`;
+            select.appendChild(option);
+        }
+
+        select.value = semaineCourante;
+    }
+
+    // Initialisation
+    remplirSelect();
     afficherSemaine(semaineCourante);
 </script>
+
 </html>

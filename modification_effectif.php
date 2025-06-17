@@ -25,7 +25,6 @@ $submit = isset($_POST["submit"]);
 
 //Si mon formulaire est soumis alors on "UPDATE" les données de notre table "utilisateur" par les données de nos input
 if ($submit) {
-    $sql = "UPDATE utilisateur SET nom =:nom, prenom =:prenom, unite_production =:unite_production, secteur =:secteur, nom_prenom_manager =:nom_prenom_manager, type_emploi =:type_emploi, type_contrat =:type_contrat, type_equipe =:type_equipe, statut =:statut";
     $params = array(
         ':nom' => $nom,
         ':prenom'=> $prenom,
@@ -36,10 +35,11 @@ if ($submit) {
         ':type_contrat' => $type_contrat,
         ':type_equipe' => $type_equipe,
         ':statut' => $statut,
+        ':id_utilisateur' => $id_utilisateur,
 
     );
     try {
-        $sth = $dbh -> prepare($sql);
+        $sth = $dbh -> prepare("CALL modifier_utilisateur(:id_utilisateur, :nom, :prenom, :unite_production, :secteur, :nom_prenom_manager, :type_emploi, :type_contrat, :type_equipe, :statut)");
         $sth -> execute($params);
     } catch (PDOException $ex) {
         die ("Erreur lors de la modification des données utilisateur : ". $ex -> getMessage());
@@ -49,10 +49,13 @@ if ($submit) {
 
     //Sinon on sélectionne les données "utilisateur" déjà connu et on les affiche dans nos input
 } else {
-    $sql = "SELECT * FROM utilisateur";
+    $sql = "SELECT * FROM utilisateur WHERE id_utilisateur=:id_utilisateur";
+    $params = array(
+        'id_utilisateur' => $id_utilisateur,
+    );
     try {
         $sth = $dbh -> prepare($sql);
-        $sth -> execute();
+        $sth -> execute($params);
         $user = $sth -> fetch(PDO::FETCH_ASSOC);
         $unite_production = $user["unite_production"];
         $secteur = $user["secteur"];
@@ -85,15 +88,15 @@ if ($submit) {
     <hr style="border: 1px solid black; width: 100%;">
 
     <form action="" method = "post" style = "margin-left: 20px;">
-        <p>Unité Production : <br><input type="text" name = "unite_production" value = "<?php echo $unite_production ?>"></p>
-        <p>Secteur : <br><input type="text" name = "secteur" value = "<?php echo $secteur ?>"></p>
-        <p>Nom-Prénom Manager : <br><input type="text" name = "nom_prenom_manager" value = "<?php echo $nom_prenom_manager ?>"></p>
-        <p>Nom : <br><input type="text" name = "nom" value = "<?php echo $nom ?>"></p>
-        <p>Prénom : <br><input type="text" name = "prenom" value = "<?php echo $prenom ?>"></p>
-        <p>Fiche Emploi : <br><input type="text" name = "type_emploi" value = "<?php echo $type_emploi ?>"></p>
-        <p>Type Contrat : <br><input type="text" name = "type_contrat" value = "<?php echo $type_contrat ?>"></p>
-        <p>Type Equipe : <br><input type="text" name = "type_equipe" value = "<?php echo $type_equipe ?>"></p>
-        <p>Statut : <br><input type="text" name = "statut" value = "<?php echo $statut ?>"></p>
+        <p>Unité Production : <br><input type="text" name = "unite_production" value = "<?php echo $unite_production ?>" maxlength="20" minlength="3"></p>
+        <p>Secteur : <br><input type="text" name = "secteur" value = "<?php echo $secteur ?>" maxlength="20" minlength="3"></p>
+        <p>Nom-Prénom Manager : <br><input type="text" name = "nom_prenom_manager" value = "<?php echo $nom_prenom_manager ?>" maxlength="30" minlength="3"></p>
+        <p>Nom : <br><input type="text" name = "nom" value = "<?php echo $nom ?>" maxlength="20" minlength="3"></p>
+        <p>Prénom : <br><input type="text" name = "prenom" value = "<?php echo $prenom ?>" maxlength="20" minlength="3"></p>
+        <p>Fiche Emploi : <br><input type="text" name = "type_emploi" value = "<?php echo $type_emploi ?>" maxlength="50" minlength="3"></p>
+        <p>Type Contrat : <br><input type="text" name = "type_contrat" value = "<?php echo $type_contrat ?>" maxlength="20" minlength="3"></p>
+        <p>Type Equipe : <br><input type="text" name = "type_equipe" value = "<?php echo $type_equipe ?>" maxlength="20" minlength="3"></p>
+        <p>Statut : <br><input type="text" name = "statut" value = "<?php echo $statut ?>" maxlength="20" minlength="3"></p>
         <p><input type="submit" name = "submit"  value = "Enregistrer"></p>
     </form>
 </body>

@@ -19,9 +19,9 @@ $qte_production = isset($_POST["qte_production"]) ? $_POST["qte_production"]:nul
 $submit = isset($_POST["submit"]);
 $annuler = isset($_POST["annuler"]);
 
-$sql = "SELECT * FROM produit";
+
 try { 
-    $sth = $dbh -> prepare($sql);
+    $sth = $dbh -> prepare("CALL lister_produits()");
     $sth -> execute();
     $rows = $sth -> fetchAll(PDO::FETCH_ASSOC);
 } catch (PDOException $ex){
@@ -29,7 +29,6 @@ try {
 }
 //Si le formulaire est soumis alors on "INSERT" les données présentes dans les inputs dans notre table "production" 
 if ($submit) {
-    $sql = "INSERT INTO production (date_production, qte_production, code_ax) VALUES (:date_production, :qte_production, :code_ax)";
     $params = array(
         ":date_production" => $date_production,
         ":qte_production" => $qte_production,
@@ -37,7 +36,7 @@ if ($submit) {
     );
     try {
         
-        $sth = $dbh -> prepare($sql);
+        $sth = $dbh -> prepare("CALL insert_production(:date_production, :qte_production, :code_ax)");
         $sth -> execute($params);
     } catch (PDOException $ex) {
         die("Erreur lors de l'insertion des données dans la table 'production' :" . $ex -> getMessage());
@@ -68,31 +67,29 @@ if ($annuler) {
 
     <form action="" method = "POST">
         
-        <select name="search_code_ax" id = "search_code_ax" style = "width: 200px; margin-left: 20px;">
-            <option value=""></option>
-                <?php
+
+    <input list="code_ax" name = "search_code_ax" placeholder = "Rechercher votre code AX" style = "margin: 20px;" >
+        <datalist id = "code_ax">
+             <?php
                     foreach ($rows as $row) {
                         echo "<option value='".$row["code_ax"]."'>";
-                        echo $row["code_ax"];
-                        echo "</option>";
                     }
                 ?>
-        </select>
+        </datalist>
 
-        <input type ="submit" name = "search" value = "Rechercher"></p>
+        <input type ="submit" name = "search" value = "Rechercher" id = "search_input"></p>
     
     </form> 
 
 <?php
     //Si mon formulaire de recherche est soumis alors on récupère les infos du produit dont le code AX correspond au code AX tapé dans la barre de recherche
     if ($search) {
-    $sql = "SELECT * FROM produit WHERE code_ax = :code_ax";
     $params = array(
         ":code_ax" => $search_code_ax,
     );
     try {
 
-        $sth = $dbh -> prepare($sql);
+        $sth = $dbh -> prepare("CALL get_produit_by_code_ax(:code_ax)");
         $sth -> execute($params);
         $produits = $sth -> fetch(PDO::FETCH_ASSOC);
 
@@ -100,19 +97,19 @@ if ($annuler) {
         die("Erreur de la récupération des données :". $ex -> getMessage());
     }
 ?>
-    <form action="" method="post" style ="margin-left: 20px;">
+    <form action="" method="post" style ="text-align: center;">
 
-        <p>Code AX : <br><input type = "text" name = "code_ax" value ="<?php echo $produits["code_ax"] ?? ''?>"></p>
+        <p>Code AX : <br><input type = "text" name = "code_ax" value ="<?php echo $produits["code_ax"] ?? ''?>" maxlength="20" minlength="3"></p>
 
-        <p>Code Movex : <br><input type = "text" name = "code_movex" value = "<?php echo $produits["code_movex"] ?? ''?>"></p>
+        <p>Code Movex : <br><input type = "text" name = "code_movex" value = "<?php echo $produits["code_movex"] ?? ''?>" maxlength="20" minlength="3"></p>
 
-        <p>Désignation : <br><input type = "text" name = "designation_produit" value = "<?php echo $produits["designation_produit"] ?? ''?>"></p>
+        <p>Désignation : <br><input type = "text" name = "designation_produit" value = "<?php echo $produits["designation_produit"] ?? ''?>" maxlength="20" minlength="3"></p>
 
-        <p>Référence commerciale : <br><input type = "text" name = "reference_commerciale" value = "<?php echo $produits["reference_commerciale"] ?? ''?>"></p>
+        <p>Référence commerciale : <br><input type = "text" name = "reference_commerciale" value = "<?php echo $produits["reference_commerciale"] ?? ''?>" maxlength="20" minlength="3"></p>
 
-        <p>Date de production :<input type="date" name = "date_production"></p>
+        <p>Date de production :<input type="date" name = "date_production" maxlength="20" minlength="3"></p>
 
-        <p>Quantité production :<input type="number" name = "qte_production"></p>
+        <p>Quantité production :<input type="number" name = "qte_production" maxlength="20" minlength="3"></p>
 
         <input type = "submit" name = "submit" value ='Enregistrer'>
 
@@ -122,5 +119,18 @@ if ($annuler) {
 <?php
 }
 ?>
+<script>
+    const searchInput = document.getElementById("search_input");
+    const listItems = document.querySelectorAll("#search_code_ax option");
+
+    searchInput.addEventListener("input", function () {
+    const filter = this.value.toLowerCase();
+
+    listItems.forEach(item => {
+    const text = item.textContent.toLowerCase();
+    item.style.display = text.includes(filter) ? "block" : "none";
+  });
+});
+</script>
 </body>
 </html>

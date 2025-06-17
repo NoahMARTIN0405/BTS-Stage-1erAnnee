@@ -6,9 +6,8 @@ include "functions/db_functions.php";
 $dbh = db_connect();
 
 //Récupération des produits
-$sql = "SELECT * FROM produit";
 try {
-    $sth = $dbh->prepare($sql);
+    $sth = $dbh->prepare("CALL lister_produits()");
     $sth -> execute();
     $produits = $sth -> fetchAll(PDO::FETCH_ASSOC);
 } catch (PDOException $ex) {
@@ -25,8 +24,9 @@ try {
     <title>Gestion des stocks</title>
     <style>
         table {
-            width: 100%;
+            width: 80%;
             border-collapse: collapse;
+            margin: auto;
         }
         th {
             border: 1px solid #ddd;

@@ -15,7 +15,6 @@ $annuler = isset($_POST["annuler"]);
 
 //Si le formulaire est soumis alors on "INSERT" les input dans la table "produit"
 if ($submit) {
-    $sql = "INSERT INTO produit (code_ax, code_movex, designation_produit, reference_commerciale) VALUES (:code_ax, :code_movex, :designation_produit, :reference_commerciale)";
     $params = array(
         ":code_ax" => $code_ax,
         ":code_movex" => $code_movex,
@@ -24,7 +23,7 @@ if ($submit) {
     );
     try {
 
-        $sth = $dbh -> prepare($sql);
+        $sth = $dbh -> prepare("CALL ajouter_produit(:code_ax, :code_movex, :designation_produit, :reference_commerciale)");
         $sth -> execute($params);
 
     } catch (PDOException $ex) {
@@ -55,13 +54,13 @@ if ($annuler) {
     
     <form action = "" method = "POST" style = "margin-left: 20px;">
 
-        <p>Code AX : <br><input type = "text" name = "code_ax"></p>
+        <p>Code AX : <br><input type = "text" name = "code_ax" maxlength="20" minlength="3"></p>
 
-        <p>Code Movex : <br><input type = "text" name = "code_movex"></p>
+        <p>Code Movex : <br><input type = "text" name = "code_movex" maxlength="20" minlength="3"></p>
 
-        <p>Désignation : <br><input type = "text" name = "designation_produit"></p>
+        <p>Désignation : <br><input type = "text" name = "designation_produit" maxlength="20" minlength="3"></p>
 
-        <p>Référence commerciale : <br><input type = "text" name = "reference_commerciale"></p>
+        <p>Référence commerciale : <br><input type = "text" name = "reference_commerciale" maxlength="20" minlength="3"></p>
 
         <input type="submit" name = "submit" value = "Enregistrer">
 

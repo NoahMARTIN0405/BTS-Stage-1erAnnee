@@ -21,7 +21,6 @@ $annuler = isset($_POST["annuler"]);
 //Si mon formulaire est soumis alors on "UPDATE" les données déjà connu dans notre table "produit" par les données présentes dans nos inputs
 if ($submit) {
 
-    $sql = "UPDATE produit SET stock_secu_attendu = :stock_secu_attendu, stock_secu_reel = :stock_secu_reel, commentaire_stock = :commentaire_stock WHERE code_ax =:code_ax";
     $params = array(
         ":code_ax" => $code_ax,
         ":stock_secu_attendu" => $stock_secu_attendu,
@@ -30,7 +29,7 @@ if ($submit) {
     );
     try {
         
-        $sth = $dbh -> prepare($sql);
+        $sth = $dbh -> prepare("CALL update_stock_produit(:code_ax, :stock_secu_attendu, :stock_secu_reel, :commentaire_stock)");
         $sth -> execute($params);
 
     } catch (PDOException $ex) {
@@ -42,24 +41,18 @@ if ($submit) {
     //Sinon affichage des données déjà connu dans les inputs
 } else {
     
-    $sql = "SELECT * FROM produit WHERE code_ax = :code_ax";
     $params = array(
         ":code_ax" => $code_ax,
     );
     try {
 
-        $sth = $dbh -> prepare($sql);
+        $sth = $dbh -> prepare("CALL get_produit_by_code_ax(:code_ax)");
         $sth -> execute($params);
         $produits = $sth -> fetch(PDO::FETCH_ASSOC);
         $code_ax = $produits["code_ax"];
         $code_movex = $produits["code_movex"];
         $designation_produit = $produits["designation_produit"];
-        $reference_commerciale = $produits["reference_commerciale"];
-        $stock_secu_attendu = $produits["stock_secu_attendu"];
-        $stock_secu_reel = $produits["stock_secu_reel"];
-        $commentaire_stock = $produits["commentaire_stock"];
-        
-        
+        $reference_commerciale = $produits["reference_commerciale"];     
 
 
     } catch (PDOException $ex) {
@@ -91,19 +84,19 @@ if ($annuler) {
 
     <form action="" method = "POST" style = "margin-left: 20px;">
 
-        <p>Code AX : <br><input type = "text" name = "code_ax" value ="<?php echo htmlspecialchars($code_ax) ?>" disabled></p>
+        <p>Code AX : <br><input type = "text" name = "code_ax" value ="<?php echo htmlspecialchars($code_ax) ?>" disabled maxlength="20" minlength="3"></p>
 
-        <p>Code Movex : <br><input type = "text" name = "code_movex" value = "<?php echo htmlspecialchars($code_movex) ?>" disabled></p>
+        <p>Code Movex : <br><input type = "text" name = "code_movex" value = "<?php echo htmlspecialchars($code_movex) ?>" disabled maxlength="20" minlength="3"></p>
 
-        <p>Désignation : <br><input type = "text" name = "designation_produit" value = "<?php echo htmlspecialchars($designation_produit) ?>" disabled></p>
+        <p>Désignation : <br><input type = "text" name = "designation_produit" value = "<?php echo htmlspecialchars($designation_produit) ?>" disabled maxlength="20" minlength="3"></p>
 
-        <p>Référence commerciale : <br><input type = "text" name = "reference_commerciale" value = "<?php echo htmlspecialchars($reference_commerciale) ?>" disabled></p>
+        <p>Référence commerciale : <br><input type = "text" name = "reference_commerciale" value = "<?php echo htmlspecialchars($reference_commerciale) ?>" disabled maxlength="20" minlength="3"></p>
 
-        <p>Stock sécurité attendu :<input type = "number" name = "stock_secu_attendu" value = "<?php echo htmlspecialchars($stock_secu_attendu) ?>"></p>
+        <p>Stock sécurité attendu :<input type = "number" name = "stock_secu_attendu" value = "<?php echo htmlspecialchars($stock_secu_attendu) ?>" maxlength="20" minlength="3"></p>
         
-        <p>Stock sécurité réel :<input type = "number" name = "stock_secu_reel" value = "<?php echo htmlspecialchars($stock_secu_reel) ?>"></p>
+        <p>Stock sécurité réel :<input type = "number" name = "stock_secu_reel" value = "<?php echo htmlspecialchars($stock_secu_reel) ?>" maxlength="20" minlength="3"></p>
 
-        <p>Commentaires :<input type = "text" name = "commentaire_stock" value = "<?php echo htmlspecialchars($commentaire_stock) ?>"></p>
+        <p>Commentaires :<input type = "text" name = "commentaire_stock" value = "<?php echo htmlspecialchars($commentaire_stock) ?>" maxlength="30" minlength="3"></p>
 
         <input type = "submit" name = "submit" value = "Enregistrer">
 

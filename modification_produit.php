@@ -21,7 +21,6 @@ $annuler = isset($_POST["annuler"]);
 //Si mon formulaire est soumis, on "UPDATE" les données que l'on avait dans la table produit et on les remplace par les données présente dans les input
 if ($submit) {
 
-    $sql = "UPDATE produit SET code_movex = :code_movex, designation_produit = :designation_produit, reference_commerciale = :reference_commerciale WHERE code_ax =:code_ax";
     $params = array(
         ":code_ax" => $code_ax,
         ":code_movex" => $code_movex,
@@ -30,7 +29,7 @@ if ($submit) {
     );
     try {
         
-        $sth = $dbh -> prepare($sql);
+        $sth = $dbh -> prepare("CALL update_produit(:code_ax, :code_movex, :designation_produit, :reference_commerciale)");
         $sth -> execute($params);
 
     } catch (PDOException $ex) {
@@ -42,13 +41,12 @@ if ($submit) {
     //Sinon on affiche seulement les données déjà connu dans nos inputs
 } else {
     
-    $sql = "SELECT * FROM produit WHERE code_ax = :code_ax";
     $params = array(
         ":code_ax" => $code_ax,
     );
     try {
 
-        $sth = $dbh -> prepare($sql);
+        $sth = $dbh -> prepare("CALL get_produit_by_code_ax(:code_ax)");
         $sth -> execute($params);
         $produits = $sth -> fetch(PDO::FETCH_ASSOC);
         $code_ax = $produits["code_ax"];
@@ -84,13 +82,13 @@ if ($annuler) {
 
     <form action="" method = "POST" style = "margin-left: 20px;">
 
-        <p>Code AX : <br><input type = "text" name = "code_ax" value ="<?php echo htmlspecialchars($code_ax) ?>"></p>
+        <p>Code AX : <br><input type = "text" name = "code_ax" value ="<?php echo htmlspecialchars($code_ax) ?>" maxlength="20" minlength="3"></p>
 
-        <p>Code Movex : <br><input type = "text" name = "code_movex" value = "<?php echo htmlspecialchars($code_movex) ?>"></p>
+        <p>Code Movex : <br><input type = "text" name = "code_movex" value = "<?php echo htmlspecialchars($code_movex) ?>" maxlength="20" minlength="3"></p>
 
-        <p>Désignation : <br><input type = "text" name = "designation_produit" value = "<?php echo htmlspecialchars($designation_produit) ?>"></p>
+        <p>Désignation : <br><input type = "text" name = "designation_produit" value = "<?php echo htmlspecialchars($designation_produit) ?>" maxlength="20" minlength="3"></p>
 
-        <p>Référence commerciale : <br><input type = "text" name = "reference_commerciale" value = "<?php echo htmlspecialchars($reference_commerciale) ?>"></p>
+        <p>Référence commerciale : <br><input type = "text" name = "reference_commerciale" value = "<?php echo htmlspecialchars($reference_commerciale) ?>" maxlength="20" minlength="3"></p>
 
         <input type="submit" name = "submit" value = "Enregistrer">
 

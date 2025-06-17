@@ -21,7 +21,6 @@ $annuler = isset($_POST["annuler"]);
 
 //Si le formulaire est soumis alors on "INSERT" les données présentes dans les inputs dans notre table "engagement" 
 if ($submit) {
-    $sql = "INSERT INTO engagement (date_engagement, qte_engagement, code_ax) VALUES (:date_engagement, :qte_engagement, :code_ax)";
     $params = array(
         ":date_engagement" => $date_engagement,
         ":qte_engagement" => $qte_engagement,
@@ -29,7 +28,7 @@ if ($submit) {
     );
     try {
         
-        $sth = $dbh -> prepare($sql);
+        $sth = $dbh -> prepare("CALL InsertEngagement(:date_engagement, :qte_engagement, :code_ax)");
         $sth -> execute($params);
     } catch (PDOException $ex) {
         die("Erreur lors de l'insertion des données dans la table 'engagement' :" . $ex -> getMessage());
@@ -37,12 +36,11 @@ if ($submit) {
     header("Location: gestion_engagement.php");
     exit;
 } else {
-    $sql = "SELECT * FROM produit WHERE code_ax = :code_ax";
     $params = array(
         ":code_ax" => $code_ax,
     );
     try {
-        $sth = $dbh -> prepare($sql);
+        $sth = $dbh -> prepare("CALL get_produit_by_code_ax(:code_ax)");
         $sth -> execute($params);
         $produits = $sth ->fetch(PDO::FETCH_ASSOC);
     } catch (PDOException $ex) {
@@ -71,17 +69,17 @@ if ($annuler) {
     
     <form action="" method ="POST" style = "margin-left: 20px;">
 
-        <p>Code AX : <br><input type = "text" name = "code_ax" value = "<?php echo $produits["code_ax"] ?? ''?>"></p>
+        <p>Code AX : <br><input type = "text" name = "code_ax" value = "<?php echo $produits["code_ax"] ?? ''?>" maxlength="20" minlength="3"></p>
 
-        <p>Code Movex : <br><input type = "text" name = "code_movex" value = "<?php echo $produits["code_movex"] ?? ''?>"></p>
+        <p>Code Movex : <br><input type = "text" name = "code_movex" value = "<?php echo $produits["code_movex"] ?? ''?>" maxlength="20" minlength="3"></p>
 
-        <p>Désignation : <br><input type = "text" name = "designation_produit" value = "<?php echo $produits["designation_produit"] ?? ''?>"></p>
+        <p>Désignation : <br><input type = "text" name = "designation_produit" value = "<?php echo $produits["designation_produit"] ?? ''?>" maxlength="20" minlength="3"></p>
 
-        <p>Référence commerciale : <br><input type = "text" name = "reference_commerciale" value = "<?php echo $produits["reference_commerciale"] ?? ''?>"></p>
+        <p>Référence commerciale : <br><input type = "text" name = "reference_commerciale" value = "<?php echo $produits["reference_commerciale"] ?? ''?>" maxlength="20" minlength="3"></p>
 
-        <p>Date de livraison :<input type="date" name = "date_engagement"></p>
+        <p>Date de livraison :<input type="date" name = "date_engagement" required maxlength="20" minlength="3"></p>
 
-        <p>Quantité à livrer<input type="number" name = "qte_engagement"></p>
+        <p>Quantité à livrer<input type="number" name = "qte_engagement" required maxlength="20" minlength="3"></p>
 
         <input type = "submit" name = "submit">
 

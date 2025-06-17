@@ -34,21 +34,60 @@ if ($deconnexion) {
     <div class="collapse navbar-collapse" id="navbarColor02">
       <ul class="navbar-nav me-auto">
         </li>
-        <li class="nav-item">
-          <a class="nav-link" href="gestion_produit.php">Gestion des produits</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="gestion_stock.php">Gestion des stocks</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="gestion_effectif.php">Gestion des effectifs</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="gestion_engagement.php">Gestion des engagements</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="saisie_production.php">Saisie production</a>
-        </li>
+        <?php
+        if($_SESSION["username"]){
+          if ($_SESSION['id_usertype'] == 1){
+
+            }else {
+          ?> <li class="nav-item">
+              <a class="nav-link" href="gestion_produit.php">Gestion des produits</a>
+            </li><?php
+          }
+        }
+        ?>
+        <?php
+        if($_SESSION["username"]){
+          if ($_SESSION['id_usertype'] == 1){
+
+            }else {
+          ?> <li class="nav-item">
+              <a class="nav-link" href="gestion_stock.php">Gestion des stocks</a>
+            </li><?php
+          }
+        }
+        ?>
+        <?php
+        if($_SESSION["username"]){
+          if ($_SESSION['id_usertype'] == 3){
+
+          ?> <li class="nav-item">
+              <a class="nav-link" href="gestion_effectif.php">Gestion des effectifs</a>
+            </li><?php
+          }
+        }
+        ?>
+        <?php
+        if($_SESSION["username"]){
+          if ($_SESSION['id_usertype'] == 1){
+
+            }else {
+          ?> <li class="nav-item">
+              <a class="nav-link" href="gestion_engagement.php">Gestion des engagements</a>
+            </li><?php
+          }
+        }
+        ?>
+        <?php
+        if($_SESSION["username"]){
+          if ($_SESSION['id_usertype'] == 1){
+
+            }else {
+          ?> <li class="nav-item">
+              <a class="nav-link" href="saisie_production.php">Saisie des productions</a>
+            </li><?php
+          }
+        }
+        ?>
         <li class="nav-item">
           <a class="nav-link" href="plan_production.php">Plan de production</a>
         </li>

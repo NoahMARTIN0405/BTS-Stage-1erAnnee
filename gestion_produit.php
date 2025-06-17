@@ -6,15 +6,14 @@ include "functions/db_functions.php";
 $dbh = db_connect();
 
 //Récupération des produits
-$sql = "SELECT * FROM produit";
 try {
-    $sth = $dbh->prepare($sql);
+    $sth = $dbh->prepare("CALL lister_produits()");
     $sth -> execute();
     $produits = $sth -> fetchAll(PDO::FETCH_ASSOC);
 } catch (PDOException $ex) {
     die ("Erreur lors de la récupération des produits : " . $ex -> getMessage());
 }
-
+$lien_insert= '<a href="ajout_produit.php">+ Ajouter un produit</a>';
 ?>
 
 <!DOCTYPE html>
@@ -25,8 +24,9 @@ try {
     <title>Gestion des produits</title>
     <style>
         table {
-            width: 100%;
+            width: 80%;
             border-collapse: collapse;
+            margin: auto;
         }
         th {
             border: 1px solid #ddd;
@@ -64,7 +64,6 @@ try {
             foreach ($produits as $produit) {
                 
                 $lien_update = '<a href="modification_produit.php?code_ax='.$produit["code_ax"].'">Modifier</a>';
-                $lien_insert= '<a href="ajout_produit.php">+ Ajouter un produit</a>';
                 echo "<tr class = 'table-active'>";
                 echo "<td>".$produit["code_ax"]."</td>";
                 echo "<td>".$produit["code_movex"]."</td>";
@@ -77,6 +76,11 @@ try {
             
         ?>
     </table>
-        <?php echo "<p style = 'text-align: right; margin-top: 10px; margin-right: 20px;'>".$lien_insert."</p>"; ?>
+        <?php 
+        if ($_SESSION["id_usertype"] == 3) {
+        echo "<p style = 'text-align: right; margin-top: 10px; margin-right: 20px;'>".$lien_insert."</p>"; 
+        
+        }
+        ?>
 </body>
 </html>
