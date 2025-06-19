@@ -5,7 +5,7 @@ include "functions/db_functions.php";
 $dbh = db_connect();
 
 // Récupération des produits
-$sql_produit = "SELECT * FROM produit";
+$sql_produit = "CALL GetAllProduits()";
 try {
     $sth = $dbh->prepare($sql_produit);
     $sth->execute();
@@ -15,7 +15,7 @@ try {
 }
 
 // Récupération des productions
-$sql = "SELECT * FROM production";
+$sql = "CALL GetAllProductions()";
 try {
     $sth = $dbh->prepare($sql);
     $sth->execute();
@@ -25,7 +25,7 @@ try {
 }
 
 // Récupération des engagements (livraisons prévues)
-$sql_engagement = "SELECT * FROM engagement";
+$sql_engagement = "CALL GetAllEngagements";
 try {
     $sth = $dbh->prepare($sql_engagement);
     $sth->execute();

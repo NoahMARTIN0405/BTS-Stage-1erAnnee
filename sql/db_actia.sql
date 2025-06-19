@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : 127.0.0.1
--- Généré le : jeu. 19 juin 2025 à 14:52
+-- Généré le : jeu. 19 juin 2025 à 15:52
 -- Version du serveur : 10.4.32-MariaDB
 -- Version de PHP : 8.0.30
 
@@ -21,6 +21,28 @@ SET time_zone = "+00:00";
 -- Base de données : `db_actia`
 --
 
+DELIMITER $$
+--
+-- Procédures
+--
+CREATE DEFINER=`root`@`localhost` PROCEDURE `GetAllEngagements` ()   BEGIN
+	SELECT * FROM engagement;
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `GetAllProductions` ()   BEGIN
+	SELECT * FROM production;
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `GetAllProduits` ()   BEGIN 
+	SELECT * FROM produit;
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `GetAllUsers` ()   BEGIN
+	SELECT * FROM utilisateur;
+END$$
+
+DELIMITER ;
+
 -- --------------------------------------------------------
 
 --
@@ -33,6 +55,13 @@ CREATE TABLE `absence` (
   `date_absence` date DEFAULT NULL,
   `id_utilisateur` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+
+--
+-- Déchargement des données de la table `absence`
+--
+
+INSERT INTO `absence` (`id_absence`, `type_absence`, `date_absence`, `id_utilisateur`) VALUES
+(1, 'E', '2025-06-20', 1);
 
 -- --------------------------------------------------------
 
@@ -189,7 +218,7 @@ ALTER TABLE `utilisateur`
 -- AUTO_INCREMENT pour la table `absence`
 --
 ALTER TABLE `absence`
-  MODIFY `id_absence` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_absence` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT pour la table `engagement`

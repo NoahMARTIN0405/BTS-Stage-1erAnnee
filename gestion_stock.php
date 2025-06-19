@@ -6,7 +6,7 @@ include "functions/db_functions.php";
 $dbh = db_connect();
 
 //Récupération des produits
-$sql = "SELECT * FROM produit";
+$sql = "CALL GetAllProduits()";
 try {
     $sth = $dbh->prepare($sql);
     $sth -> execute();

@@ -6,7 +6,7 @@ include "functions/db_functions.php";
 $dbh = db_connect();
 
 //Récupération des utilisateurs
-$sql = "SELECT * FROM utilisateur";
+$sql = "CALL GetAllUsers()";
 try {
     $sth = $dbh -> prepare($sql);
     $sth -> execute();

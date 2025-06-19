@@ -19,7 +19,7 @@ $qte_production = isset($_POST["qte_production"]) ? $_POST["qte_production"]:nul
 $submit = isset($_POST["submit"]);
 $annuler = isset($_POST["annuler"]);
 
-$sql = "SELECT * FROM produit";
+$sql = "CALL GetAllProduits()";
 try { 
     $sth = $dbh -> prepare($sql);
     $sth -> execute();
@@ -85,12 +85,13 @@ if ($annuler) {
 <?php
     //Si mon formulaire de recherche est soumis alors on récupère les infos du produit dont le code AX correspond au code AX tapé dans la barre de recherche
     if ($search) {
+    $sql = "SELECT * FROM produit WHERE code_ax = :code_ax";
     $params = array(
         ":code_ax" => $search_code_ax,
     );
     try {
 
-        $sth = $dbh -> prepare("CALL get_produit_by_code_ax(:code_ax)");
+        $sth = $dbh -> prepare($sql);
         $sth -> execute($params);
         $produits = $sth -> fetch(PDO::FETCH_ASSOC);
 
