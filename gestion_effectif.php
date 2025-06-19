@@ -14,7 +14,7 @@
     
     <div style = "display: flex; justify-content: center; gap: 20px; margin: 20px auto;">
     <a href = "tableau_effectif.php"><button style = "padding: 20px 40px; font-size: 20px; cursor: pointer; background-color: #00ae4e; color: white;">Tableau des effectifs</button></a>
-    <a href="saisie_absence.php"><button style = "padding: 20px 40px; font-size: 20px; cursor: pointer; background-color: #00ae4e; color: white;">En cours (absence)</button></a>
+    <a href="saisie_absence.php"><button style = "padding: 20px 40px; font-size: 20px; cursor: pointer; background-color: #00ae4e; color: white;">Saisie des absences</button></a>
     </div>
 </body>
 </html>

@@ -46,13 +46,15 @@ if ($submit) {
     );
     try {
 
-        $sth = $dbh -> prepare("CALL get_produit_by_code_ax(:code_ax)");
+        $sth = $dbh -> prepare("CALL GetProduitByCodeAx(:code_ax)");
         $sth -> execute($params);
         $produits = $sth -> fetch(PDO::FETCH_ASSOC);
         $code_ax = $produits["code_ax"];
         $code_movex = $produits["code_movex"];
         $designation_produit = $produits["designation_produit"];
-        $reference_commerciale = $produits["reference_commerciale"];     
+        $reference_commerciale = $produits["reference_commerciale"];  
+        $stock_secu_attendu = $produits["stock_secu_attendu"];
+        $stock_secu_reel = $produits["stock_secu_reel"];  
 
 
     } catch (PDOException $ex) {
@@ -82,7 +84,7 @@ if ($annuler) {
 
     <hr style="border: 1px solid black; width: 100%;">
 
-    <form action="" method = "POST" style = "margin-left: 20px;">
+    <form action="" method = "POST" style = "text-align: center;">
 
         <p>Code AX : <br><input type = "text" name = "code_ax" value ="<?php echo htmlspecialchars($code_ax) ?>" disabled maxlength="20" minlength="3"></p>
 

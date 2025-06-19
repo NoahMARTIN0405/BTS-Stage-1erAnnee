@@ -25,8 +25,9 @@ $sql_prod = "SELECT "
     <title>Gestion des effectifs</title>
     <style>
         table {
-            width: 100%;
+            width: 80%;
             border-collapse: collapse;
+            margin: auto;
         }
         th {
             border: 1px solid #ddd;
@@ -59,6 +60,7 @@ $sql_prod = "SELECT "
             <th>Unité Production</th>
             <th>Secteur</th>
             <th>Nom-Prénom Manager</th>
+            <th>Nom d'utilisateur</th>
             <th>Nom</th>
             <th>Prénom</th>
             <th>Fiche Emploi</th>
@@ -76,6 +78,7 @@ $sql_prod = "SELECT "
                     echo "<td>".$user["unite_production"]."</td>";
                     echo "<td>".$user["secteur"]."</td>";
                     echo "<td>".$user["nom_prenom_manager"]."</td>";
+                    echo "<td>".$user["username"]."</td>";
                     echo "<td>".$user["nom"]."</td>";
                     echo "<td>".$user["prenom"]."</td>";
                     echo "<td>".$user["type_emploi"]."</td>";
@@ -87,5 +90,57 @@ $sql_prod = "SELECT "
                 }
             ?>
     </table>
+    <?php
+        $aujourdHui = new DateTime();
+        $dates = [];
+        for ($i = 0; $i < 15; $i++) {
+            $jour = clone $aujourdHui;
+            $jour->modify("+$i day");
+            $dates[] = $jour->format('Y-m-d');
+        }
+
+        $sql_abs = "SELECT * FROM absence WHERE date_absence BETWEEN :start AND :end";
+        $sth = $dbh->prepare($sql_abs);
+        $sth->execute([
+        ':start' => $dates[0],
+        ':end' => end($dates)
+        ]);
+            $absences = $sth->fetchAll(PDO::FETCH_ASSOC);
+
+        // Regrouper les absences par [id_utilisateur][date_absence] = lib_absence
+        $absenceMap = [];
+        foreach ($absences as $abs) {
+            $absenceMap[$abs['id_utilisateur']][$abs['date_absence']] = true;
+        }
+
+        echo "<h2 style='text-align:center; margin-top: 40px;'>Planning des effectifs - 15 prochains jours</h2>";
+        echo "<table style='margin-top: 20px;'>";
+
+        // Ligne d'en-tête
+        echo "<tr><th>Nom</th><th>Prénom</th>";
+        foreach ($dates as $date) {
+        echo "<th>" . date("d/m", strtotime($date)) . "</th>";
+        }
+        echo "</tr>";
+
+        // Données utilisateurs
+        foreach ($users as $user) {
+            echo "<tr>";
+            echo "<td>{$user['nom']}</td>";
+            echo "<td>{$user['prenom']}</td>";
+        foreach ($dates as $date) {
+            if (isset($absenceMap[$user['id_utilisateur']][$date])) {
+            $type = $absenceMap[$user['id_utilisateur']][$date];
+            echo "<td style='background-color: #fdd;'>❌ {$type}</td>";
+        } else {
+            echo "<td style='background-color: #dfd;'>✅</td>";
+        }
+        }
+        echo "</tr>";
+}
+    echo "</table>";
+
+?>
+<p style = 'text-align: right; margin-top: 10px; margin-right: 20px;'><a href="saisie_effectif.php">+ Ajouter un effectif</a></p>
 </body>
 </html>

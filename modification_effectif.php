@@ -87,7 +87,7 @@ if ($submit) {
 
     <hr style="border: 1px solid black; width: 100%;">
 
-    <form action="" method = "post" style = "margin-left: 20px;">
+    <form action="" method = "post" style = "text-align: center;">
         <p>Unité Production : <br><input type="text" name = "unite_production" value = "<?php echo $unite_production ?>" maxlength="20" minlength="3"></p>
         <p>Secteur : <br><input type="text" name = "secteur" value = "<?php echo $secteur ?>" maxlength="20" minlength="3"></p>
         <p>Nom-Prénom Manager : <br><input type="text" name = "nom_prenom_manager" value = "<?php echo $nom_prenom_manager ?>" maxlength="30" minlength="3"></p>

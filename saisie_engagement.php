@@ -67,7 +67,7 @@ if ($annuler) {
 
     <hr style="border: 1px solid black; width: 100%;">
     
-    <form action="" method ="POST" style = "margin-left: 20px;">
+    <form action="" method ="POST" style = "text-align: center;">
 
         <p>Code AX : <br><input type = "text" name = "code_ax" value = "<?php echo $produits["code_ax"] ?? ''?>" maxlength="20" minlength="3"></p>
 

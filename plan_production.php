@@ -127,10 +127,6 @@ foreach ($engagements as $eng) {
                 echo "<th class='col-" . ($i + 1) . "'>$formatted</th>";
             }
             ?>
-            <th>Tps prod</th>
-            <th>Durée cycle</th>
-            <th>Réalisé</th>
-            <th>Reste à fabriquer</th>
         </tr>
     </thead>
     <tbody>
@@ -160,10 +156,6 @@ foreach ($engagements as $eng) {
                     $class = $qte !== '' ? 'has-engagement' : '';
                     echo "<td class='col-" . ($i + 1) . " $class'>" . ($qte !== '' ? $qte : '') . "</td>";
                 endforeach; ?>
-                <td>&nbsp</td>
-                <td>&nbsp</td>
-                <td>&nbsp</td>
-                <td>&nbsp</td>
 
             </tr>
         <?php endforeach; ?>
