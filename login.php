@@ -15,13 +15,14 @@ $submit = isset($_POST["submit"]);
 
 //Si mon formulaire est soumis, je récupère toute les valeurs de la table "utilisateur"
 if ($submit) {
+  $sql = "SELECT * FROM utilisateur WHERE username = :username and mdp = :mdp";
     $params = array(
         ":username" => $username,
         ":mdp" => $password,
     );
     try {
 
-        $sth = $dbh -> prepare("CALL verifier_utilisateur(:username, :mdp)");
+        $sth = $dbh -> prepare($sql);
         $sth -> execute($params);
         $rows = $sth -> fetch(PDO::FETCH_ASSOC);
 

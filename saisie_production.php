@@ -19,9 +19,9 @@ $qte_production = isset($_POST["qte_production"]) ? $_POST["qte_production"]:nul
 $submit = isset($_POST["submit"]);
 $annuler = isset($_POST["annuler"]);
 
-
+$sql = "SELECT * FROM produit";
 try { 
-    $sth = $dbh -> prepare("CALL lister_produits()");
+    $sth = $dbh -> prepare($sql);
     $sth -> execute();
     $rows = $sth -> fetchAll(PDO::FETCH_ASSOC);
 } catch (PDOException $ex){
@@ -29,6 +29,7 @@ try {
 }
 //Si le formulaire est soumis alors on "INSERT" les données présentes dans les inputs dans notre table "production" 
 if ($submit) {
+    $sql = "INSERT INTO production (date_production, qte_production, code_ax) VALUES (:date_production, :qte_production, :code_ax)";
     $params = array(
         ":date_production" => $date_production,
         ":qte_production" => $qte_production,
@@ -36,7 +37,7 @@ if ($submit) {
     );
     try {
         
-        $sth = $dbh -> prepare("CALL insert_production(:date_production, :qte_production, :code_ax)");
+        $sth = $dbh -> prepare($sql);
         $sth -> execute($params);
     } catch (PDOException $ex) {
         die("Erreur lors de l'insertion des données dans la table 'production' :" . $ex -> getMessage());

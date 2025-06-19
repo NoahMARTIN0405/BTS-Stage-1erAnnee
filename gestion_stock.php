@@ -6,8 +6,9 @@ include "functions/db_functions.php";
 $dbh = db_connect();
 
 //Récupération des produits
+$sql = "SELECT * FROM produit";
 try {
-    $sth = $dbh->prepare("CALL lister_produits()");
+    $sth = $dbh->prepare($sql);
     $sth -> execute();
     $produits = $sth -> fetchAll(PDO::FETCH_ASSOC);
 } catch (PDOException $ex) {

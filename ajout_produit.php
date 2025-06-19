@@ -15,6 +15,7 @@ $annuler = isset($_POST["annuler"]);
 
 //Si le formulaire est soumis alors on "INSERT" les input dans la table "produit"
 if ($submit) {
+    $sql = "INSERT INTO produit (code_ax, code_movex, designation_produit, reference_commerciale) VALUES (:code_ax, :code_movex, :designation_produit, :reference_commerciale)";
     $params = array(
         ":code_ax" => $code_ax,
         ":code_movex" => $code_movex,
@@ -23,7 +24,7 @@ if ($submit) {
     );
     try {
 
-        $sth = $dbh -> prepare("CALL ajouter_produit(:code_ax, :code_movex, :designation_produit, :reference_commerciale)");
+        $sth = $dbh -> prepare($sql);
         $sth -> execute($params);
 
     } catch (PDOException $ex) {

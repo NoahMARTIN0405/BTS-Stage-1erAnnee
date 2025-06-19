@@ -12,12 +12,13 @@ if ($code_ax == null || $date_engagement == null) {
 $delete = isset($_POST["delete"]);
 
 if ($delete) {
+    $sql = "DELETE FROM `engagement` WHERE code_ax = :code_ax AND date_engagement =:date_engagement"
     $params = array(
         ":code_ax" => $code_ax,
         ":date_engagement" => $date_engagement,
     );
     try {
-        $sth = $dbh -> prepare("CALL delete_engagement(:code_ax, :date_engagement)");
+        $sth = $dbh -> prepare($sql);
         $sth -> execute($params);
     } catch (PDOException $ex) {
         die("Erreur lors de la suppression des données :". $ex -> getMessage());
@@ -25,13 +26,13 @@ if ($delete) {
     header("Location: gestion_engagement.php");
     exit;
 } else {
-
+    $sql = "SELECT * FROM engagement WHERE code_ax =:code_ax AND date_engagement=:date_engagement";
     $params = array(
         ":code_ax" => $code_ax,
         ":date_engagement" => $date_engagement,
     );
     try {
-        $sth = $dbh -> prepare("CALL get_engagement_by_id(:code_ax, :date_engagement)");
+        $sth = $dbh -> prepare($sql);
         $sth -> execute($params);
         $suppresion_engagements = $sth -> fetch(PDO::FETCH_ASSOC);
     } catch (PDOException $ex) {

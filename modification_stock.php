@@ -20,7 +20,7 @@ $annuler = isset($_POST["annuler"]);
 
 //Si mon formulaire est soumis alors on "UPDATE" les données déjà connu dans notre table "produit" par les données présentes dans nos inputs
 if ($submit) {
-
+    $sql = "UPDATE produit SET stock_secu_attendu = :stock_secu_attendu, stock_secu_reel = :stock_secu_reel, commentaire_stock = :commentaire_stock WHERE code_ax =:code_ax";
     $params = array(
         ":code_ax" => $code_ax,
         ":stock_secu_attendu" => $stock_secu_attendu,
@@ -29,7 +29,7 @@ if ($submit) {
     );
     try {
         
-        $sth = $dbh -> prepare("CALL update_stock_produit(:code_ax, :stock_secu_attendu, :stock_secu_reel, :commentaire_stock)");
+        $sth = $dbh -> prepare($sql);
         $sth -> execute($params);
 
     } catch (PDOException $ex) {
@@ -40,13 +40,13 @@ if ($submit) {
 
     //Sinon affichage des données déjà connu dans les inputs
 } else {
-    
+    $sql = "SELECT * FROM produit WHERE code_ax = :code_ax";
     $params = array(
         ":code_ax" => $code_ax,
     );
     try {
 
-        $sth = $dbh -> prepare("CALL GetProduitByCodeAx(:code_ax)");
+        $sth = $dbh -> prepare($sql);
         $sth -> execute($params);
         $produits = $sth -> fetch(PDO::FETCH_ASSOC);
         $code_ax = $produits["code_ax"];

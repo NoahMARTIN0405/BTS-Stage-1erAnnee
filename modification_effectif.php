@@ -25,6 +25,7 @@ $submit = isset($_POST["submit"]);
 
 //Si mon formulaire est soumis alors on "UPDATE" les données de notre table "utilisateur" par les données de nos input
 if ($submit) {
+    $sql = "UPDATE utilisateur SET nom =:nom, prenom =:prenom, unite_production =:unite_production, secteur =:secteur, nom_prenom_manager =:nom_prenom_manager, type_emploi =:type_emploi, type_contrat =:type_contrat, type_equipe =:type_equipe, statut =:statut";
     $params = array(
         ':nom' => $nom,
         ':prenom'=> $prenom,
@@ -39,7 +40,7 @@ if ($submit) {
 
     );
     try {
-        $sth = $dbh -> prepare("CALL modifier_utilisateur(:id_utilisateur, :nom, :prenom, :unite_production, :secteur, :nom_prenom_manager, :type_emploi, :type_contrat, :type_equipe, :statut)");
+        $sth = $dbh -> prepare($sql);
         $sth -> execute($params);
     } catch (PDOException $ex) {
         die ("Erreur lors de la modification des données utilisateur : ". $ex -> getMessage());

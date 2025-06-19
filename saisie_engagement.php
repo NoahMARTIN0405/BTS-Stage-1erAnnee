@@ -21,6 +21,7 @@ $annuler = isset($_POST["annuler"]);
 
 //Si le formulaire est soumis alors on "INSERT" les données présentes dans les inputs dans notre table "engagement" 
 if ($submit) {
+    $sql = "INSERT INTO engagement (date_engagement, qte_engagement, code_ax) VALUES (:date_engagement, :qte_engagement, :code_ax)";
     $params = array(
         ":date_engagement" => $date_engagement,
         ":qte_engagement" => $qte_engagement,
@@ -28,7 +29,7 @@ if ($submit) {
     );
     try {
         
-        $sth = $dbh -> prepare("CALL InsertEngagement(:date_engagement, :qte_engagement, :code_ax)");
+        $sth = $dbh -> prepare($sql);
         $sth -> execute($params);
     } catch (PDOException $ex) {
         die("Erreur lors de l'insertion des données dans la table 'engagement' :" . $ex -> getMessage());
@@ -36,11 +37,12 @@ if ($submit) {
     header("Location: gestion_engagement.php");
     exit;
 } else {
+    $sql = "SELECT * FROM produit WHERE code_ax = :code_ax";
     $params = array(
         ":code_ax" => $code_ax,
     );
     try {
-        $sth = $dbh -> prepare("CALL get_produit_by_code_ax(:code_ax)");
+        $sth = $dbh -> prepare($sql);
         $sth -> execute($params);
         $produits = $sth ->fetch(PDO::FETCH_ASSOC);
     } catch (PDOException $ex) {

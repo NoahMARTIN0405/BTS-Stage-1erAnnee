@@ -16,15 +16,14 @@ $qte_engagement = isset($_POST["qte_engagement"]) ? $_POST["qte_engagement"] : n
 $submit = isset($_POST["modification_date_engagement"]);
 
 if ($submit) {
-    
+    $sql = "UPDATE `engagement` SET `date_engagement`=:new_date_engagement,`qte_engagement`=:qte_engagement,`code_ax`=:code_ax";
     $params = array(
         ":code_ax" => $code_ax,
-        ":original_date_engagement" => $original_date_engagement,
         ":new_date_engagement" => $new_date_engagement,
         ":qte_engagement" => $qte_engagement
     ); 
     try {
-        $sth = $dbh->prepare("CALL update_engagement(:code_ax, :original_date_engagement, :new_date_engagement, :qte_engagement)");
+        $sth = $dbh->prepare($sql);
         $sth->execute($params);
     } catch (PDOException $ex) {
         die("Erreur lors de la modification des données : " . $ex->getMessage());

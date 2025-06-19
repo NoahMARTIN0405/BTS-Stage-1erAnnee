@@ -56,11 +56,12 @@ $search = isset($_POST["search"]);
     <br>
 <?php        
     if ($search) {
+    $sql = "SELECT * FROM produit INNER JOIN engagement ON produit.code_ax = engagement.code_ax WHERE produit.code_ax = :code_ax";
     $params = array(
         ":code_ax" => $search_code_ax,
     );
     try {
-        $sth = $dbh -> prepare("CALL chercher_engagements_par_code_ax(:code_ax)");
+        $sth = $dbh -> prepare($sql);
         $sth -> execute($params);
         $gestion_engagements = $sth -> fetcHAll(PDO::FETCH_ASSOC);
     } catch (PDOException $ex){

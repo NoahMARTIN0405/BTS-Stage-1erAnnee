@@ -5,8 +5,9 @@ include "functions/db_functions.php";
 $dbh = db_connect();
 
 // Récupération des produits
+$sql_produit = "SELECT * FROM produit";
 try {
-    $sth = $dbh->prepare("CALL GetProduits()");
+    $sth = $dbh->prepare($sql_produit);
     $sth->execute();
     $produits = $sth->fetchAll(PDO::FETCH_ASSOC);
 } catch (PDOException $ex) {
@@ -14,9 +15,9 @@ try {
 }
 
 // Récupération des productions
-
+$sql = "SELECT * FROM production";
 try {
-    $sth = $dbh->prepare("CALL GetProductions()");
+    $sth = $dbh->prepare($sql);
     $sth->execute();
     $productions = $sth->fetchAll(PDO::FETCH_ASSOC);
 } catch (PDOException $ex) {
@@ -24,8 +25,9 @@ try {
 }
 
 // Récupération des engagements (livraisons prévues)
+$sql_engagement = "SELECT * FROM engagement";
 try {
-    $sth = $dbh->prepare("CALL GetEngagements()");
+    $sth = $dbh->prepare($sql_engagement);
     $sth->execute();
     $engagements = $sth->fetchAll(PDO::FETCH_ASSOC);
 } catch (PDOException $ex) {

@@ -99,7 +99,7 @@ if ($submit) {
     } catch (PDOException $ex) {
         die("erreur lors de l'insertion des données dans la table absence :".$ex -> getMessage());
     }
-    header("Location: tableau_effectif.php")
+    header("Location: tableau_effectif.php");
 }
 ?>
 </body>
