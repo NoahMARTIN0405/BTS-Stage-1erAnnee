@@ -25,7 +25,7 @@ $submit = isset($_POST["submit"]);
 
 //Si mon formulaire est soumis alors on "UPDATE" les données de notre table "utilisateur" par les données de nos input
 if ($submit) {
-    $sql = "UPDATE utilisateur SET nom =:nom, prenom =:prenom, unite_production =:unite_production, secteur =:secteur, nom_prenom_manager =:nom_prenom_manager, type_emploi =:type_emploi, type_contrat =:type_contrat, type_equipe =:type_equipe, statut =:statut";
+    $sql = "UPDATE utilisateur SET nom =:nom, prenom =:prenom, unite_production =:unite_production, secteur =:secteur, nom_prenom_manager =:nom_prenom_manager, type_emploi =:type_emploi, type_contrat =:type_contrat, type_equipe =:type_equipe, statut =:statut WHERE id_utilisateur =:id_utilisateur";
     $params = array(
         ':nom' => $nom,
         ':prenom'=> $prenom,
@@ -88,17 +88,56 @@ if ($submit) {
 
     <hr style="border: 1px solid black; width: 100%;">
 
-    <form action="" method = "post" style = "text-align: center;">
-        <p>Unité Production : <br><input type="text" name = "unite_production" value = "<?php echo $unite_production ?>" maxlength="20" minlength="3"></p>
-        <p>Secteur : <br><input type="text" name = "secteur" value = "<?php echo $secteur ?>" maxlength="20" minlength="3"></p>
-        <p>Nom-Prénom Manager : <br><input type="text" name = "nom_prenom_manager" value = "<?php echo $nom_prenom_manager ?>" maxlength="30" minlength="3"></p>
-        <p>Nom : <br><input type="text" name = "nom" value = "<?php echo $nom ?>" maxlength="20" minlength="3"></p>
-        <p>Prénom : <br><input type="text" name = "prenom" value = "<?php echo $prenom ?>" maxlength="20" minlength="3"></p>
-        <p>Fiche Emploi : <br><input type="text" name = "type_emploi" value = "<?php echo $type_emploi ?>" maxlength="50" minlength="3"></p>
-        <p>Type Contrat : <br><input type="text" name = "type_contrat" value = "<?php echo $type_contrat ?>" maxlength="20" minlength="3"></p>
-        <p>Type Equipe : <br><input type="text" name = "type_equipe" value = "<?php echo $type_equipe ?>" maxlength="20" minlength="3"></p>
-        <p>Statut : <br><input type="text" name = "statut" value = "<?php echo $statut ?>" maxlength="20" minlength="3"></p>
-        <p><input type="submit" name = "submit"  value = "Enregistrer"></p>
-    </form>
+    <form action="" method="post" class="container mt-5" style="max-width: 600px;">
+    <div class="mb-3">
+        <label class="form-label">Unité Production :</label>
+        <input type="text" name="unite_production" class="form-control" value="<?= htmlspecialchars($unite_production) ?>" maxlength="20" minlength="3">
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Secteur :</label>
+        <input type="text" name="secteur" class="form-control" value="<?= htmlspecialchars($secteur) ?>" maxlength="20" minlength="3">
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Nom-Prénom Manager :</label>
+        <input type="text" name="nom_prenom_manager" class="form-control" value="<?= htmlspecialchars($nom_prenom_manager) ?>" maxlength="30" minlength="3">
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Nom :</label>
+        <input type="text" name="nom" class="form-control" value="<?= htmlspecialchars($nom) ?>" maxlength="20" minlength="3">
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Prénom :</label>
+        <input type="text" name="prenom" class="form-control" value="<?= htmlspecialchars($prenom) ?>" maxlength="20" minlength="3">
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Fiche Emploi :</label>
+        <input type="text" name="type_emploi" class="form-control" value="<?= htmlspecialchars($type_emploi) ?>" maxlength="50" minlength="3">
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Type Contrat :</label>
+        <input type="text" name="type_contrat" class="form-control" value="<?= htmlspecialchars($type_contrat) ?>" maxlength="20" minlength="3">
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Type Équipe :</label>
+        <input type="text" name="type_equipe" class="form-control" value="<?= htmlspecialchars($type_equipe) ?>" maxlength="20" minlength="3">
+    </div>
+
+    <div class="mb-4">
+        <label class="form-label">Statut :</label>
+        <input type="text" name="statut" class="form-control" value="<?= htmlspecialchars($statut) ?>" maxlength="20" minlength="3">
+    </div>
+
+    <div class="text-center">
+        <button type="submit" name="submit" class="btn btn-success">Enregistrer</button>
+    </div>
+</form>
+
 </body>
 </html>

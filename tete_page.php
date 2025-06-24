@@ -27,15 +27,18 @@ if ($deconnexion) {
 <body>
     <nav class="navbar navbar-expand-lg bg-dark" data-bs-theme="dark">
   <div class="container-fluid">
-    <a class="navbar-brand" href="dashboard.php"><img src="img/logo/ACTIA_QUADRI_RVB.png" width = 200px  alt=""></a>
+    <a class="navbar-brand"><img src="img/logo/ACTIA_QUADRI_RVB.png" width = 200px  alt=""></a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarColor02" aria-controls="navbarColor02" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarColor02">
       <ul class="navbar-nav me-auto">
         </li>
+        <li class="nav-item">
+          <a class="nav-link" href="plan_production.php">Plan de production</a>
+        </li>
         <?php
-        if($_SESSION["username"]){
+        if(isset($_SESSION["username"])){
           if ($_SESSION['id_usertype'] == 1){
 
             }else {
@@ -46,7 +49,7 @@ if ($deconnexion) {
         }
         ?>
         <?php
-        if($_SESSION["username"]){
+        if(isset($_SESSION["username"])){
           if ($_SESSION['id_usertype'] == 1){
 
             }else {
@@ -57,40 +60,15 @@ if ($deconnexion) {
         }
         ?>
         <?php
-        if($_SESSION["username"]){
+        if(isset($_SESSION["username"])){
           if ($_SESSION['id_usertype'] == 3){
 
           ?> <li class="nav-item">
-              <a class="nav-link" href="gestion_effectif.php">Gestion des effectifs</a>
+              <a class="nav-link" href="tableau_effectif.php">Gestion des effectifs</a>
             </li><?php
           }
         }
         ?>
-        <?php
-        if($_SESSION["username"]){
-          if ($_SESSION['id_usertype'] == 1){
-
-            }else {
-          ?> <li class="nav-item">
-              <a class="nav-link" href="gestion_engagement.php">Gestion des engagements</a>
-            </li><?php
-          }
-        }
-        ?>
-        <?php
-        if($_SESSION["username"]){
-          if ($_SESSION['id_usertype'] == 1){
-
-            }else {
-          ?> <li class="nav-item">
-              <a class="nav-link" href="saisie_production.php">Saisie des productions</a>
-            </li><?php
-          }
-        }
-        ?>
-        <li class="nav-item">
-          <a class="nav-link" href="plan_production.php">Plan de production</a>
-        </li>
       </ul>
         <div style="display: grid; place-items: center">
             <p>Connecté en tant que : <span style ="color: #00ae4e; font-weight: bold;" ><?php echo $_SESSION["username"] ?></span></p>

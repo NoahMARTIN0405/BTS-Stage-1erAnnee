@@ -58,38 +58,75 @@ if ($submit) {
 
     <hr style="border: 1px solid black; width: 100%;">
 
-    <form action="" method="post" style = "text-align: center;">
-        
-    <p>Nom d'utilisateur : <br><input type="text" name = "username" required></p>
+<form action="" method="POST" class="container mt-5" style="max-width: 600px;">
+    <div class="mb-3">
+        <label class="form-label">Nom d'utilisateur :</label>
+        <input type="text" name="username" class="form-control" required>
+    </div>
 
-    <p>Mot de passe : <br><input type="text" name = "mdp" required></p>
+    <div class="mb-3">
+        <label class="form-label">Mot de passe :</label>
+        <input type="password" name="mdp" class="form-control" required>
+    </div>
 
-    <p>Nom : <br><input type="text" name = "name" required></p>
+    <div class="mb-3">
+        <label class="form-label">Nom :</label>
+        <input type="text" name="name" class="form-control" required>
+    </div>
 
-    <p>Prénom : <br><input type="text" name = "prenom" required></p>
-    
-    <p>Unité Production : <br><input type="text" name = "unite_production" required></p>
-    
-    <p>Secteur : <br><input type="text" name = "secteur" required></p>
-    
-    <p>Nom-Prénom Manager : <br><input type="text" name = "nom_prenom_manager" required></p>
-    
-    <p>Type Emploi : <br><input type="text" name = "type_emploi" required></p>
-    
-    <p>Type Contrat : <br><input type="text" name = "type_contrat" required></p>
-    
-    <p>Type Equipe : <br><input type="text" name = "type_equipe" required></p>
-    
-    <p>Statut : <br><input type="text" name = "statut" required></p>
+    <div class="mb-3">
+        <label class="form-label">Prénom :</label>
+        <input type="text" name="prenom" class="form-control" required>
+    </div>
 
-    <p>Type Utilisateur : <br>
-    <select name = "usertype" >
-        <option value="1">Utilisateur</option>
-        <option value="2">Administrateur</option>
-        <option value="3">Super-Administrateur</option>
-    </select>
-    </p>
-    <input type="submit" name = "submit" value = "Enregistrer">
-    </form>
+    <div class="mb-3">
+        <label class="form-label">Unité Production :</label>
+        <input type="text" name="unite_production" class="form-control" required>
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Secteur :</label>
+        <input type="text" name="secteur" class="form-control" required>
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Nom-Prénom Manager :</label>
+        <input type="text" name="nom_prenom_manager" class="form-control" required>
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Type Emploi :</label>
+        <input type="text" name="type_emploi" class="form-control" required>
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Type Contrat :</label>
+        <input type="text" name="type_contrat" class="form-control" required>
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Type Équipe :</label>
+        <input type="text" name="type_equipe" class="form-control" required>
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Statut :</label>
+        <input type="text" name="statut" class="form-control" required>
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Type Utilisateur :</label>
+        <select name="usertype" class="form-select" required>
+            <option value="1">Utilisateur</option>
+            <option value="2">Administrateur</option>
+            <option value="3">Super-Administrateur</option>
+        </select>
+    </div>
+
+    <div class="d-flex justify-content-center">
+        <button type="submit" name="submit" class="btn btn-success">Enregistrer</button>
+    </div>
+</form>
+
 </body>
 </html>

@@ -12,7 +12,7 @@ if ($code_ax == null || $date_engagement == null) {
 $delete = isset($_POST["delete"]);
 
 if ($delete) {
-    $sql = "DELETE FROM `engagement` WHERE code_ax = :code_ax AND date_engagement =:date_engagement"
+    $sql = "DELETE FROM `engagement` WHERE code_ax = :code_ax AND date_engagement =:date_engagement";
     $params = array(
         ":code_ax" => $code_ax,
         ":date_engagement" => $date_engagement,
@@ -26,7 +26,7 @@ if ($delete) {
     header("Location: gestion_engagement.php");
     exit;
 } else {
-    $sql = "SELECT * FROM engagement WHERE code_ax =:code_ax AND date_engagement=:date_engagement";
+    $sql = "SELECT * FROM engagement INNER JOIN produit ON engagement.code_ax = produit.code_ax WHERE produit.code_ax =:code_ax AND date_engagement=:date_engagement";
     $params = array(
         ":code_ax" => $code_ax,
         ":date_engagement" => $date_engagement,
@@ -56,21 +56,41 @@ if ($delete) {
 
     <hr style="border: 1px solid black; width: 100%;">
     
-    <form action="" method="post" style = "text-align: center;">
-        
-        <p>Code AX : <br><input type="text" name="" value = "<?php  echo $code_ax ?>" disabled></p>
+    <form action="" method="post" class="container mt-5" style="max-width: 600px;">
+    <div class="mb-3">
+        <label class="form-label">Code AX :</label>
+        <input type="text" class="form-control" value="<?= htmlspecialchars($code_ax) ?>" disabled>
+    </div>
 
-        <p>Code Movex :<br><input type="text" name="" value = "<?php echo $suppresion_engagements["code_movex"] ?>" disabled maxlength="20" minlength="3"></p>
+    <div class="mb-3">
+        <label class="form-label">Code Movex :</label>
+        <input type="text" class="form-control" value="<?= htmlspecialchars($suppresion_engagements["code_movex"]) ?>" disabled>
+    </div>
 
-        <p>Désignation produit : <br><input type="text" name="" value = "<?php echo $suppresion_engagements["designation_produit"] ?>" disabled maxlength="20" minlength="3"></p>
+    <div class="mb-3">
+        <label class="form-label">Désignation produit :</label>
+        <input type="text" class="form-control" value="<?= htmlspecialchars($suppresion_engagements["designation_produit"]) ?>" disabled>
+    </div>
 
-        <p>Référence commerciale : <br><input type="text" name="" value = "<?php echo $suppresion_engagements["reference_commerciale"] ?>" disabled maxlength="20" minlength="3"></p>
+    <div class="mb-3">
+        <label class="form-label">Référence commerciale :</label>
+        <input type="text" class="form-control" value="<?= htmlspecialchars($suppresion_engagements["reference_commerciale"]) ?>" disabled>
+    </div>
 
-        <p>Date engagement :<br><input type="date" name="" value = "<?php echo $suppresion_engagements["date_engagement"] ?>" disabled maxlength="20" minlength="3"></p>
+    <div class="mb-3">
+        <label class="form-label">Date engagement :</label>
+        <input type="date" class="form-control" value="<?= htmlspecialchars($suppresion_engagements["date_engagement"]) ?>" disabled>
+    </div>
 
-        <p>Quantité engagement :<br><input type="number" name="" value = "<?php echo $suppresion_engagements["qte_engagement"] ?>" disabled maxlength="20" minlength="3"></p>
+    <div class="mb-3">
+        <label class="form-label">Quantité engagement :</label>
+        <input type="number" class="form-control" value="<?= htmlspecialchars($suppresion_engagements["qte_engagement"]) ?>" disabled>
+    </div>
 
-        <input type="submit" name = "delete" value="Supprimer">
-    </form>
+    <div class="text-center">
+        <button type="submit" name="delete" class="btn btn-danger">Supprimer</button>
+    </div>
+</form>
+
  </body>
  </html>

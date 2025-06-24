@@ -105,7 +105,18 @@ foreach ($engagements as $eng) {
 
     <div id="semaine-label" style="margin: 10px 0; font-weight: bold;"></div>
 </div>
+        <?php
+        if(isset($_SESSION["username"])){
+          if ($_SESSION['id_usertype'] == 1){
 
+            }else {
+          ?> <p style = "text-align: center;">
+              <a href="gestion_engagement.php">Gestion des engagements</a>
+              <a href="saisie_production.php">Saisie des productions</a>
+            </p><?php
+          }
+        }
+        ?>
 <table id="planning">
     <thead>
         <tr>
@@ -163,7 +174,6 @@ foreach ($engagements as $eng) {
         <?php endforeach; ?>
     </tbody>
 </table>
-
 </body>
 <script>
     const joursParSemaine = 7;

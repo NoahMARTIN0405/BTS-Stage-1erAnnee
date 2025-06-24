@@ -13,10 +13,11 @@ $search = isset($_POST["search"]);
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-        <style>
+    <style>
         table {
-            width: 100%;
+            width: 80%;
             border-collapse: collapse;
+            margin: auto;
         }
         th {
             border: 1px solid #ddd;
@@ -56,7 +57,7 @@ $search = isset($_POST["search"]);
     <br>
 <?php        
     if ($search) {
-    $sql = "SELECT * FROM produit INNER JOIN engagement ON produit.code_ax = engagement.code_ax WHERE produit.code_ax = :code_ax";
+    $sql = "SELECT * FROM produit INNER JOIN engagement ON produit.code_ax = engagement.code_ax WHERE produit.code_ax = :code_ax ORDER BY date_engagement ASC";
     $params = array(
         ":code_ax" => $search_code_ax,
     );

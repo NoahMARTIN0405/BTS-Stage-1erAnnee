@@ -80,20 +80,32 @@ if ($annuler) {
 
     <hr style="border: 1px solid black; width: 100%;">
 
-    <form action="" method = "POST" style = "text-align: center;">
+    <form action="" method="POST" class="container mt-5" style="max-width: 600px;">
+    <div class="mb-3">
+        <label class="form-label">Code AX :</label>
+        <input type="text" name="code_ax" class="form-control" value="<?= htmlspecialchars($code_ax) ?>" maxlength="20" minlength="3" required>
+    </div>
 
-        <p>Code AX : <br><input type = "text" name = "code_ax" value ="<?php echo htmlspecialchars($code_ax) ?>" maxlength="20" minlength="3"></p>
+    <div class="mb-3">
+        <label class="form-label">Code Movex :</label>
+        <input type="text" name="code_movex" class="form-control" value="<?= htmlspecialchars($code_movex) ?>" maxlength="20" minlength="3" required>
+    </div>
 
-        <p>Code Movex : <br><input type = "text" name = "code_movex" value = "<?php echo htmlspecialchars($code_movex) ?>" maxlength="20" minlength="3"></p>
+    <div class="mb-3">
+        <label class="form-label">Désignation :</label>
+        <input type="text" name="designation_produit" class="form-control" value="<?= htmlspecialchars($designation_produit) ?>" maxlength="20" minlength="3" required>
+    </div>
 
-        <p>Désignation : <br><input type = "text" name = "designation_produit" value = "<?php echo htmlspecialchars($designation_produit) ?>" maxlength="20" minlength="3"></p>
+    <div class="mb-3">
+        <label class="form-label">Référence commerciale :</label>
+        <input type="text" name="reference_commerciale" class="form-control" value="<?= htmlspecialchars($reference_commerciale) ?>" maxlength="20" minlength="3" required>
+    </div>
 
-        <p>Référence commerciale : <br><input type = "text" name = "reference_commerciale" value = "<?php echo htmlspecialchars($reference_commerciale) ?>" maxlength="20" minlength="3"></p>
+    <div class="d-flex justify-content-center gap-2">
+        <button type="submit" name="submit" class="btn btn-success">Enregistrer</button>
+        <button type="submit" name="annuler" class="btn btn-secondary">Annuler</button>
+    </div>
+</form>
 
-        <input type="submit" name = "submit" value = "Enregistrer">
-
-        <input type="submit" name = annuler value = "annuler">
-
-    </form>
 </body>
 </html>

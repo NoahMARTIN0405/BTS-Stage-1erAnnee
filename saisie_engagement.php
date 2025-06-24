@@ -69,23 +69,42 @@ if ($annuler) {
 
     <hr style="border: 1px solid black; width: 100%;">
     
-    <form action="" method ="POST" style = "text-align: center;">
+    <form action="" method="POST" class="container mt-5" style="max-width: 600px;">
+    <div class="mb-3">
+        <label class="form-label">Code AX :</label>
+        <input type="text" name="code_ax" class="form-control" value="<?= htmlspecialchars($produits["code_ax"] ?? '') ?>" maxlength="20" minlength="3">
+    </div>
 
-        <p>Code AX : <br><input type = "text" name = "code_ax" value = "<?php echo $produits["code_ax"] ?? ''?>" maxlength="20" minlength="3"></p>
+    <div class="mb-3">
+        <label class="form-label">Code Movex :</label>
+        <input type="text" name="code_movex" class="form-control" value="<?= htmlspecialchars($produits["code_movex"] ?? '') ?>" maxlength="20" minlength="3">
+    </div>
 
-        <p>Code Movex : <br><input type = "text" name = "code_movex" value = "<?php echo $produits["code_movex"] ?? ''?>" maxlength="20" minlength="3"></p>
+    <div class="mb-3">
+        <label class="form-label">Désignation :</label>
+        <input type="text" name="designation_produit" class="form-control" value="<?= htmlspecialchars($produits["designation_produit"] ?? '') ?>" maxlength="20" minlength="3">
+    </div>
 
-        <p>Désignation : <br><input type = "text" name = "designation_produit" value = "<?php echo $produits["designation_produit"] ?? ''?>" maxlength="20" minlength="3"></p>
+    <div class="mb-3">
+        <label class="form-label">Référence commerciale :</label>
+        <input type="text" name="reference_commerciale" class="form-control" value="<?= htmlspecialchars($produits["reference_commerciale"] ?? '') ?>" maxlength="20" minlength="3">
+    </div>
 
-        <p>Référence commerciale : <br><input type = "text" name = "reference_commerciale" value = "<?php echo $produits["reference_commerciale"] ?? ''?>" maxlength="20" minlength="3"></p>
+    <div class="mb-3">
+        <label class="form-label">Date de livraison :</label>
+        <input type="date" name="date_engagement" class="form-control" maxlength="20" minlength="3">
+    </div>
 
-        <p>Date de livraison :<input type="date" name = "date_engagement" required maxlength="20" minlength="3"></p>
+    <div class="mb-3">
+        <label class="form-label">Quantité à livrer :</label>
+        <input type="number" name="qte_engagement" class="form-control" maxlength="20" minlength="3">
+    </div>
 
-        <p>Quantité à livrer<input type="number" name = "qte_engagement" required maxlength="20" minlength="3"></p>
+    <div class="d-flex justify-content-center gap-2">
+        <button type="submit" name="submit" class="btn btn-success">Enregistrer</button>
+        <button type="submit" name="annuler" class="btn btn-secondary">Annuler</button>
+    </div>
+</form>
 
-        <input type = "submit" name = "submit">
-
-        <input type="submit" name = annuler value = "annuler">
-    </form>
 </body>
 </html>

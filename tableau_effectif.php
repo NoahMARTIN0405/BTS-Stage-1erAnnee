@@ -90,6 +90,7 @@ $sql_prod = "SELECT "
                 }
             ?>
     </table>
+    <p style = 'text-align: right; margin-top: 10px; margin-right: 20px;'><a href="saisie_effectif.php">+ Ajouter un effectif</a></p>
     <?php
         $aujourdHui = new DateTime();
         $dates = [];
@@ -141,6 +142,6 @@ $sql_prod = "SELECT "
     echo "</table>";
 
 ?>
-<p style = 'text-align: right; margin-top: 10px; margin-right: 20px;'><a href="saisie_effectif.php">+ Ajouter un effectif</a></p>
+<p style = 'text-align: right; margin-top: 10px; margin-right: 20px;'><a href="saisie_absence.php">+ Saisir une absence</a></p>
 </body>
 </html>

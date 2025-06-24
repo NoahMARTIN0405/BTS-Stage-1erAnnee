@@ -16,11 +16,12 @@ $qte_engagement = isset($_POST["qte_engagement"]) ? $_POST["qte_engagement"] : n
 $submit = isset($_POST["modification_date_engagement"]);
 
 if ($submit) {
-    $sql = "UPDATE `engagement` SET `date_engagement`=:new_date_engagement,`qte_engagement`=:qte_engagement,`code_ax`=:code_ax";
+    $sql = "UPDATE `engagement` SET `date_engagement`=:new_date_engagement,`qte_engagement`=:qte_engagement WHERE code_ax=:code_ax AND date_engagement =:original_date_engagement";
     $params = array(
         ":code_ax" => $code_ax,
         ":new_date_engagement" => $new_date_engagement,
-        ":qte_engagement" => $qte_engagement
+        ":qte_engagement" => $qte_engagement,
+        ":original_date_engagement" => $original_date_engagement,
     ); 
     try {
         $sth = $dbh->prepare($sql);
@@ -62,22 +63,42 @@ if ($submit) {
     <h1 style = "text-align: center; margin-top: 20px;">Modification d'un engagement</h1>
 
     <hr style="border: 1px solid black; width: 100%;">
-    <form action="" method="post" style="text-align: center;">
-    <p>Code AX : <br><input type="text" value="<?php echo htmlspecialchars($code_ax); ?>" disabled maxlength="20" minlength="3"></p>
-    <p>Code Movex :<br><input type="text" value="<?php echo htmlspecialchars($modification_engagements["code_movex"]); ?>" disabled maxlength="20" minlength="3"></p>
-    <p>Désignation produit : <br><input type="text" value="<?php echo htmlspecialchars($modification_engagements["designation_produit"]); ?>" disabled maxlength="20" minlength="3"></p>
-    <p>Référence commerciale : <br><input type="text" value="<?php echo htmlspecialchars($modification_engagements["reference_commerciale"]); ?>" disabled maxlength="30" minlength="3"></p>
+    <form action="" method="post" class="container mt-5" style="max-width: 600px;">
+    <div class="mb-3">
+        <label class="form-label">Code AX :</label>
+        <input type="text" class="form-control" value="<?= htmlspecialchars($code_ax); ?>" disabled maxlength="20" minlength="3">
+    </div>
 
-    <p>Date engagement :<br>
-        <input type="date" name="date_engagement" value="<?php echo htmlspecialchars($modification_engagements["date_engagement"]); ?>" maxlength="20" minlength="3">
-    </p>
+    <div class="mb-3">
+        <label class="form-label">Code Movex :</label>
+        <input type="text" class="form-control" value="<?= htmlspecialchars($modification_engagements["code_movex"]); ?>" disabled maxlength="20" minlength="3">
+    </div>
 
-    <p>Quantité engagement :<br>
-        <input type="number" name="qte_engagement" value="<?php echo htmlspecialchars($modification_engagements["qte_engagement"]); ?>" maxlength="20" minlength="3">
-    </p>
+    <div class="mb-3">
+        <label class="form-label">Désignation produit :</label>
+        <input type="text" class="form-control" value="<?= htmlspecialchars($modification_engagements["designation_produit"]); ?>" disabled maxlength="20" minlength="3">
+    </div>
 
-    <input type="submit" name="modification_date_engagement" value="Modifier">
+    <div class="mb-3">
+        <label class="form-label">Référence commerciale :</label>
+        <input type="text" class="form-control" value="<?= htmlspecialchars($modification_engagements["reference_commerciale"]); ?>" disabled maxlength="30" minlength="3">
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Date engagement :</label>
+        <input type="date" name="date_engagement" class="form-control" value="<?= htmlspecialchars($modification_engagements["date_engagement"]); ?>">
+    </div>
+
+    <div class="mb-4">
+        <label class="form-label">Quantité engagement :</label>
+        <input type="number" name="qte_engagement" class="form-control" value="<?= htmlspecialchars($modification_engagements["qte_engagement"]); ?>">
+    </div>
+
+    <div class="text-center">
+        <button type="submit" name="modification_date_engagement" class="btn btn-primary">Modifier</button>
+    </div>
 </form>
+
 
 </body>
 </html>

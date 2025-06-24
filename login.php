@@ -35,7 +35,7 @@ if ($submit) {
         $_SESSION["username"] = $username ;
         $_SESSION["id_usertype"] = $rows["id_usertype"];
         $_SESSION["id_utilisateur"] = $rows["id_utilisateur"];
-        header("Location: dashboard.php");
+        header("Location: plan_production.php");
     
     //Sinon Affichage de "Identifiants incorrects"
     } else {
