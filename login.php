@@ -15,7 +15,7 @@ $submit = isset($_POST["submit"]);
 
 //Si mon formulaire est soumis, je récupère toute les valeurs de la table "utilisateur"
 if ($submit) {
-  $sql = "SELECT * FROM utilisateur WHERE username = :username and mdp = :mdp";
+  $sql = "CALL get_utilisateur_by_credentials(:username, :mdp)";
     $params = array(
         ":username" => $username,
         ":mdp" => $password,

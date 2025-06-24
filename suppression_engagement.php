@@ -12,7 +12,7 @@ if ($code_ax == null || $date_engagement == null) {
 $delete = isset($_POST["delete"]);
 
 if ($delete) {
-    $sql = "DELETE FROM `engagement` WHERE code_ax = :code_ax AND date_engagement =:date_engagement";
+    $sql = "CALL delete_engagement(:code_ax, :date_engagement)";
     $params = array(
         ":code_ax" => $code_ax,
         ":date_engagement" => $date_engagement,
@@ -26,7 +26,7 @@ if ($delete) {
     header("Location: gestion_engagement.php");
     exit;
 } else {
-    $sql = "SELECT * FROM engagement INNER JOIN produit ON engagement.code_ax = produit.code_ax WHERE produit.code_ax =:code_ax AND date_engagement=:date_engagement";
+    $sql = "CALL get_engagement_produit(:code_ax, :date_engagement)";
     $params = array(
         ":code_ax" => $code_ax,
         ":date_engagement" => $date_engagement,

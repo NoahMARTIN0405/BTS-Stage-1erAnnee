@@ -100,7 +100,7 @@ $sql_prod = "SELECT "
             $dates[] = $jour->format('Y-m-d');
         }
 
-        $sql_abs = "SELECT * FROM absence WHERE date_absence BETWEEN :start AND :end";
+        $sql_abs = "CALL get_absences_between_dates(:start, :end)";
         $sth = $dbh->prepare($sql_abs);
         $sth->execute([
         ':start' => $dates[0],

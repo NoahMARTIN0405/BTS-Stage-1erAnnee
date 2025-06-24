@@ -20,7 +20,9 @@ $annuler = isset($_POST["annuler"]);
 
 //Si mon formulaire est soumis, on "UPDATE" les données que l'on avait dans la table produit et on les remplace par les données présente dans les input
 if ($submit) {
-    $sql = "UPDATE produit SET code_movex = :code_movex, designation_produit = :designation_produit, reference_commerciale = :reference_commerciale WHERE code_ax =:code_ax";
+    $sql = "CALL update_produit_by_code_ax(
+        :code_ax, :code_movex, :designation_produit, :reference_commerciale
+    )";
     $params = array(
         ":code_ax" => $code_ax,
         ":code_movex" => $code_movex,
@@ -40,7 +42,7 @@ if ($submit) {
     
     //Sinon on affiche seulement les données déjà connu dans nos inputs
 } else {
-    $sql = "SELECT * FROM produit WHERE code_ax = :code_ax";
+    $sql = "CALL get_produit_by_code_ax(:code_ax)";
     $params = array(
         ":code_ax" => $code_ax,
     );

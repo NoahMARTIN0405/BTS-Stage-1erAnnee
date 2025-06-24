@@ -29,7 +29,7 @@ try {
 }
 //Si le formulaire est soumis alors on "INSERT" les données présentes dans les inputs dans notre table "production" 
 if ($submit) {
-    $sql = "INSERT INTO production (date_production, qte_production, code_ax) VALUES (:date_production, :qte_production, :code_ax)";
+    $sql = "CALL insert_production(:date_production, :qte_production, :code_ax)";
     $params = array(
         ":date_production" => $date_production,
         ":qte_production" => $qte_production,
@@ -85,7 +85,7 @@ if ($annuler) {
 <?php
     //Si mon formulaire de recherche est soumis alors on récupère les infos du produit dont le code AX correspond au code AX tapé dans la barre de recherche
     if ($search) {
-    $sql = "SELECT * FROM produit WHERE code_ax = :code_ax";
+    $sql = "CALL get_produit_by_code_ax(:code_ax)";
     $params = array(
         ":code_ax" => $search_code_ax,
     );

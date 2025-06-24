@@ -19,8 +19,10 @@ $submit = isset($_POST["submit"]);
 
 // Si le formulaire est envoyé alors on créer un nouvel utilisateur
 if ($submit) {
-    $sql = "INSERT INTO utilisateur (`username`, `mdp`, `nom`, `prenom`, `unite_production`, `secteur`, `nom_prenom_manager`, `type_emploi`, `type_contrat`, `type_equipe`, `statut`, `id_usertype`) 
-    VALUES (:username, :mdp ,:nom,:prenom,:unite_production,:secteur,:nom_prenom_manager,:type_emploi,:type_contrat,:type_equipe,:statut,:usertype)";
+    $sql = "CALL insert_utilisateur(
+        :username, :mdp, :nom, :prenom, :unite_production, :secteur,
+        :nom_prenom_manager, :type_emploi, :type_contrat, :type_equipe, :statut, :id_usertype
+    )";
     $params = array(
         ':username' => $username,
         ':mdp' => $password,

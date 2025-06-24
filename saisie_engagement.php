@@ -21,7 +21,7 @@ $annuler = isset($_POST["annuler"]);
 
 //Si le formulaire est soumis alors on "INSERT" les données présentes dans les inputs dans notre table "engagement" 
 if ($submit) {
-    $sql = "INSERT INTO engagement (date_engagement, qte_engagement, code_ax) VALUES (:date_engagement, :qte_engagement, :code_ax)";
+    $sql = "CALL insert_engagement(:date_engagement, :qte_engagement, :code_ax)";
     $params = array(
         ":date_engagement" => $date_engagement,
         ":qte_engagement" => $qte_engagement,
@@ -37,7 +37,7 @@ if ($submit) {
     header("Location: gestion_engagement.php");
     exit;
 } else {
-    $sql = "SELECT * FROM produit WHERE code_ax = :code_ax";
+    $sql = "CALL get_produit_by_code_ax(:code_ax)";
     $params = array(
         ":code_ax" => $code_ax,
     );

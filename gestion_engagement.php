@@ -57,7 +57,7 @@ $search = isset($_POST["search"]);
     <br>
 <?php        
     if ($search) {
-    $sql = "SELECT * FROM produit INNER JOIN engagement ON produit.code_ax = engagement.code_ax WHERE produit.code_ax = :code_ax ORDER BY date_engagement ASC";
+    $sql = "CALL get_produit_engagement_by_code_ax(:code_ax)";
     $params = array(
         ":code_ax" => $search_code_ax,
     );

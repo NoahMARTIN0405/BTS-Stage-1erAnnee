@@ -25,7 +25,10 @@ $submit = isset($_POST["submit"]);
 
 //Si mon formulaire est soumis alors on "UPDATE" les données de notre table "utilisateur" par les données de nos input
 if ($submit) {
-    $sql = "UPDATE utilisateur SET nom =:nom, prenom =:prenom, unite_production =:unite_production, secteur =:secteur, nom_prenom_manager =:nom_prenom_manager, type_emploi =:type_emploi, type_contrat =:type_contrat, type_equipe =:type_equipe, statut =:statut WHERE id_utilisateur =:id_utilisateur";
+    $sql = "CALL update_utilisateur_by_id(
+        :id_utilisateur, :nom, :prenom, :unite_production, :secteur,
+        :nom_prenom_manager, :type_emploi, :type_contrat, :type_equipe, :statut
+    )";
     $params = array(
         ':nom' => $nom,
         ':prenom'=> $prenom,
@@ -50,7 +53,7 @@ if ($submit) {
 
     //Sinon on sélectionne les données "utilisateur" déjà connu et on les affiche dans nos input
 } else {
-    $sql = "SELECT * FROM utilisateur WHERE id_utilisateur=:id_utilisateur";
+    $sql = "CALL get_utilisateur_by_id(:id_utilisateur)";
     $params = array(
         'id_utilisateur' => $id_utilisateur,
     );

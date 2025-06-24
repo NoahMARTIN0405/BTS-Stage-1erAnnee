@@ -16,7 +16,9 @@ $qte_engagement = isset($_POST["qte_engagement"]) ? $_POST["qte_engagement"] : n
 $submit = isset($_POST["modification_date_engagement"]);
 
 if ($submit) {
-    $sql = "UPDATE `engagement` SET `date_engagement`=:new_date_engagement,`qte_engagement`=:qte_engagement WHERE code_ax=:code_ax AND date_engagement =:original_date_engagement";
+    $sql = "CALL update_engagement_by_code_and_date(
+        :code_ax, :original_date_engagement, :new_date_engagement, :qte_engagement
+    )";
     $params = array(
         ":code_ax" => $code_ax,
         ":new_date_engagement" => $new_date_engagement,
@@ -32,9 +34,7 @@ if ($submit) {
     header("Location: gestion_engagement.php");
     exit;
 } else {
-    $sql = "SELECT * FROM produit 
-            INNER JOIN engagement ON produit.code_ax = engagement.code_ax 
-            WHERE produit.code_ax = :code_ax AND date_engagement = :date_engagement";
+    $sql = "CALL get_produit_engagement_by_code_and_date(:code_ax, :date_engagement)";
 
     $params = array(
         ":code_ax" => $code_ax,

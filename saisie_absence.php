@@ -8,7 +8,7 @@ $submit = isset($_POST["submit"]);
 
 // Liste tous les utilisateurs pour le datalist
 try {
-    $sql_all = "SELECT username FROM utilisateur";
+    $sql_all = "CALL get_all_usernames()";
     $sth = $dbh->prepare($sql_all);
     $sth->execute();
     $utilisateurs = $sth->fetchAll(PDO::FETCH_ASSOC);
@@ -44,7 +44,7 @@ try {
 
 <?php
 if ($search && $search_username) {
-    $sql = "SELECT * FROM utilisateur WHERE username = :username";
+    $sql = "CALL get_utilisateur_by_username(:username)";
     $params = [":username" => $search_username];
 
     try {
@@ -120,7 +120,7 @@ if ($submit) {
     $date_absence = $_POST["date_absence"] ?? null;
 
     if ($id_utilisateur && $type_absence && $date_absence) {
-        $sql = "INSERT INTO absence (`type_absence`, `date_absence`, `id_utilisateur`) VALUES (:type_absence, :date_absence, :id_utilisateur)";
+        $sql = "CALL insert_absence(:type_absence, :date_absence, :id_utilisateur)";
         $params = [
             ":type_absence" => $type_absence,
             ":date_absence" => $date_absence,
